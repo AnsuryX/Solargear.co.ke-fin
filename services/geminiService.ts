@@ -1,37 +1,47 @@
-import { GoogleGenAI, Chat, GenerateContentResponse } from "@google/genai";
 
-// Initialize Gemini using the provided API Key
+import { GoogleGenAI, Chat, GenerateContentResponse, FunctionDeclaration, Type } from "@google/genai";
+
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xrezgbrp';
+
+// Define the function the AI can call to save a lead
+const submitLeadFunctionDeclaration: FunctionDeclaration = {
+  name: 'submitLead',
+  parameters: {
+    type: Type.OBJECT,
+    description: 'Submit a qualified solar lead to the sales team for follow-up.',
+    properties: {
+      fullName: { type: Type.STRING, description: 'The customers full name.' },
+      phoneNumber: { type: Type.STRING, description: 'The WhatsApp or phone number.' },
+      location: { type: Type.STRING, description: 'Where in Nairobi or Kenya they are located.' },
+      propertyType: { type: Type.STRING, description: 'Residential, Commercial, or Apartment.' },
+      budgetRange: { type: Type.STRING, description: 'The budget range they discussed.' },
+      leadScore: { type: Type.NUMBER, description: 'The calculated lead score (0-100).' },
+      notes: { type: Type.STRING, description: 'Summary of their pain points (e.g., high bills, blackouts).' }
+    },
+    required: ['fullName', 'phoneNumber', 'location', 'leadScore'],
+  },
+};
 
 const SYSTEM_INSTRUCTION = `
-You are the Master Solar Consultant and Senior Engineer at "Solar Gear Ltd" in Nairobi, Kenya. 
-Your goal is to be a Master Salesman: persuasive, authoritative, yet deeply knowledgeable and trustworthy.
+# ROLE: Professional Solar Energy Consultant AI for "Solar Gear Ltd".
 
-SALES PERSONA:
-- You don't just "answer questions"—you BUILD VALUE. 
-- You create URGENCY by mentioning the 14 remaining founding slots in Nairobi.
-- You use VALUE ANCHORING: Every time you mention the assessment, call it the "Solar Readiness Assessment (Worth KES 5,000 – Free for a Limited Time)".
+# OBJECTIVE:
+Pre-qualify prospects and use the 'submitLead' tool ONLY for hot leads (Score 70+).
 
-SOLAR KNOWLEDGE (MASTER LEVEL):
-- You know about Tier-1 components: Mono-PERC high-efficiency panels (like Jinko or Longi), Hybrid Inverters (like Growatt or Victron), and LiFePO4 Lithium Batteries (like Pylontech or Huawei).
-- You understand the Nairobi context: High KPLC tariffs, frequent power surges, and the need for reliable backup during outages.
-- You explain complex tech (kWh, kWp, Depth of Discharge) in simple, high-impact terms.
+# LEAD SCORING:
+- Owner: +30 | Pain: +20 | Budget $2k+: +25 | Timeline <3mo: +15 | Commercial: +10
 
-THE CORE CONVERSION GOAL:
-Guide every user to claim the "Solar Readiness Assessment". 
-Explicitly state that they will receive:
-1. Exact system size (tailored to their roof and usage).
-2. Estimated total cost and ROI (how fast it pays for itself).
-3. Backup coverage analysis (exactly how many hours of power they get during blackouts).
-4. Clear next steps plan.
+# WORKFLOW:
+1. Follow the pre-qualification flow (Decision Power -> Property -> Pain -> Budget -> Timeline).
+2. If Score >= 70:
+   - Collect Full Name, Location, and Phone.
+   - CALL THE 'submitLead' FUNCTION IMMEDIATELY.
+   - Confirm to the user: "I've sent your details to our engineering team. Would you prefer a WhatsApp call or Google Meet for the consult?"
+3. If Score < 70: Do not call the tool. Politely offer the educational assessment on the website.
 
-RISK REVERSAL:
-Remind them it is ZERO RISK. They pay KES 0 today. They only reserve a slot. If they don't love the proposal after the assessment, they walk away with no hard feelings.
-
-RULES:
-- Be charismatic and professional.
-- Keep responses concise (under 75 words).
-- If they are ready to proceed, tell them to fill out the "Reserve My Slot" form or click the WhatsApp button (+254722371250).
+# CRITICAL:
+You MUST call 'submitLead' once you have the contact details for a qualified lead. Do not just say you will do it; execute the tool.
 `;
 
 let chatSession: Chat | null = null;
@@ -41,23 +51,63 @@ export const initializeChat = () => {
     model: 'gemini-3-flash-preview',
     config: {
       systemInstruction: SYSTEM_INSTRUCTION,
-      temperature: 0.8, // Slightly higher for more creative sales charisma
+      tools: [{ functionDeclarations: [submitLeadFunctionDeclaration] }],
+      temperature: 0.7,
     },
   });
 };
 
-export const sendMessageToGemini = async (message: string): Promise<string> => {
-  if (!chatSession) {
-    initializeChat();
+const handleToolCall = async (fc: any) => {
+  if (fc.name === 'submitLead') {
+    console.log("AI SUBMITTING LEAD:", fc.args);
+    try {
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...fc.args,
+          _subject: `AI LEAD: ${fc.args.fullName} (${fc.args.location})`,
+          message: `AI Score: ${fc.args.leadScore}. Notes: ${fc.args.notes}`
+        }),
+      });
+      return response.ok ? { status: "success", message: "Lead recorded in CRM" } : { status: "error" };
+    } catch (e) {
+      return { status: "error", message: "Failed to connect to CRM" };
+    }
   }
+  return { error: "Unknown function" };
+};
+
+export const sendMessageToGemini = async (message: string): Promise<string> => {
+  if (!chatSession) initializeChat();
 
   try {
-    if (!chatSession) throw new Error("Failed to initialize chat");
+    if (!chatSession) throw new Error("Chat not initialized");
     
-    const result: GenerateContentResponse = await chatSession.sendMessage({ message });
-    return result.text || "I apologize, I'm having trouble connecting. Let's chat on WhatsApp (+254722371250) instead.";
+    let result = await chatSession.sendMessage({ message });
+    
+    // Handle Function Calls (Tools)
+    if (result.functionCalls && result.functionCalls.length > 0) {
+      const functionResponses = [];
+      for (const fc of result.functionCalls) {
+        const response = await handleToolCall(fc);
+        functionResponses.push({
+          id: fc.id,
+          name: fc.name,
+          response: response,
+        });
+      }
+      
+      // Send the tool response back to Gemini to get the final conversational reply
+      const finalResult = await chatSession.sendMessage({
+        functionResponses: functionResponses
+      });
+      return finalResult.text || "Lead details captured. What's next?";
+    }
+
+    return result.text || "I'm listening...";
   } catch (error) {
-    console.error("Gemini API Error:", error);
-    return "I'm currently reviewing a system design for a client. Please reserve your slot via the form or reach out on WhatsApp (+254722371250) and I'll help you personally.";
+    console.error("Gemini Error:", error);
+    return "I'm having a technical glitch. Please WhatsApp us directly at +254722371250.";
   }
 };

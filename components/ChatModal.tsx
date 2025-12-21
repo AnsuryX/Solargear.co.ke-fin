@@ -1,5 +1,6 @@
+
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Send, Bot, User, Loader2 } from 'lucide-react';
+import { X, Send, Bot, User, Loader2, Database } from 'lucide-react';
 import { sendMessageToGemini } from '../services/geminiService';
 import { ChatMessage } from '../types';
 
@@ -10,7 +11,7 @@ interface ChatModalProps {
 
 export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([
-    { role: 'model', text: 'Jambo! I am the Lead Engineer here. Ready to lock in your energy independence? Ask me anything about solar, or let’s get your Solar Readiness Assessment (Worth KES 5,000) scheduled for free.' }
+    { role: 'model', text: 'Hi 👋 Welcome to Solar Gear. I’ll ask you a few quick questions to see if solar is a good fit for you (takes under 1 minute). Deal? 😊' }
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -61,10 +62,10 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
                 <Bot size={20} />
             </div>
             <div>
-                <h3 className="text-white font-bold text-sm">Lead Solar Engineer</h3>
+                <h3 className="text-white font-bold text-sm">Solar Consultant</h3>
                 <p className="text-xs text-green-500 flex items-center gap-1">
                     <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-                    Online & Ready
+                    Lead Qualification Mode
                 </p>
             </div>
           </div>
@@ -74,14 +75,14 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-charcoal">
           {messages.map((msg, idx) => (
             <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               <div 
-                className={`max-w-[80%] p-3 rounded-lg text-sm leading-relaxed ${
+                className={`max-w-[85%] p-4 rounded-2xl text-sm leading-relaxed ${
                   msg.role === 'user' 
-                    ? 'bg-gold text-charcoal font-medium' 
-                    : 'bg-white/10 text-gray-200 border border-white/5'
+                    ? 'bg-gold text-charcoal font-semibold rounded-tr-none' 
+                    : 'bg-white/5 text-gray-200 border border-white/10 rounded-tl-none'
                 }`}
               >
                 {msg.text}
@@ -90,13 +91,15 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
           ))}
           {isLoading && (
              <div className="flex justify-start">
-               <div className="bg-white/5 p-3 rounded-lg flex gap-2 items-center">
+               <div className="bg-white/5 p-4 rounded-2xl rounded-tl-none border border-white/10 flex flex-col gap-2">
                  <div className="flex gap-1">
-                    <span className="w-1 h-1 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
-                    <span className="w-1 h-1 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
-                    <span className="w-1 h-1 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                    <span className="w-1.5 h-1.5 bg-gold rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                    <span className="w-1.5 h-1.5 bg-gold rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                    <span className="w-1.5 h-1.5 bg-gold rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
                  </div>
-                 <span className="text-xs text-gray-500 italic">Engineer is typing...</span>
+                 <div className="text-[10px] text-gray-500 uppercase tracking-tighter flex items-center gap-1 font-bold">
+                   <Database size={10} className="animate-pulse" /> Analyzing Lead Quality...
+                 </div>
                </div>
              </div>
           )}
@@ -111,18 +114,21 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Ask about your free KES 5,000 assessment..." 
-              className="flex-1 bg-[#111] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold transition-colors text-sm"
+              placeholder="Type your answer..." 
+              className="flex-1 bg-[#111] border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-gold transition-colors text-sm"
               autoFocus
             />
             <button 
               onClick={handleSend}
               disabled={isLoading || !inputValue.trim()}
-              className="bg-gold hover:bg-gold-light text-charcoal p-3 rounded-lg disabled:opacity-50 transition-colors"
+              className="bg-gold hover:bg-gold-light text-charcoal p-4 rounded-xl disabled:opacity-50 transition-colors shadow-lg shadow-gold/10"
             >
               <Send size={20} />
             </button>
           </div>
+          <p className="text-[10px] text-gray-600 mt-2 text-center uppercase tracking-widest font-bold flex items-center justify-center gap-2">
+            SECURE LEAD TRANSFER ENCRYPTED
+          </p>
         </div>
       </div>
     </div>
