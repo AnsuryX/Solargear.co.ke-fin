@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Send, Bot, User, Loader2, Database } from 'lucide-react';
+import { X, Send, Bot, User, Loader2, Database, MessageCircle, Calendar, ExternalLink } from 'lucide-react';
 import { sendMessageToGemini } from '../services/geminiService';
 import { ChatMessage } from '../types';
 
@@ -9,9 +9,11 @@ interface ChatModalProps {
   onClose: () => void;
 }
 
+const CALENDLY_URL = "https://calendly.com/solargearlrd/30min";
+
 export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([
-    { role: 'model', text: 'Hi 👋 Welcome to Solar Gear. I’ll ask you a few quick questions to see if solar is a good fit for you (takes under 1 minute). Deal? 😊' }
+    { role: 'model', text: 'Hi 👋 Welcome to Solar Gear. Are you looking for a solar solution for your Home, Business, or an Apartment here in Nairobi? 😊' }
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -35,9 +37,21 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
 
     try {
       const responseText = await sendMessageToGemini(userText);
-      setMessages(prev => [...prev, { role: 'model', text: responseText }]);
+      const isSystemError = responseText.includes("technical glitch") || responseText.includes("sync error");
+      const isBookingReady = responseText.includes("calendly.com") || responseText.includes("book your slot");
+      
+      setMessages(prev => [...prev, { 
+        role: 'model', 
+        text: responseText, 
+        isError: isSystemError,
+        isBooking: isBookingReady
+      }]);
     } catch (error) {
-        setMessages(prev => [...prev, { role: 'model', text: "Connection interrupted. Please try again or WhatsApp us.", isError: true }]);
+        setMessages(prev => [...prev, { 
+          role: 'model', 
+          text: "I'm having trouble connecting. Please book your Free 30-min Solar Assessment directly via our calendar.", 
+          isError: true 
+        }]);
     } finally {
       setIsLoading(false);
     }
@@ -62,10 +76,10 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
                 <Bot size={20} />
             </div>
             <div>
-                <h3 className="text-white font-bold text-sm">Solar Consultant</h3>
-                <p className="text-xs text-green-500 flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-                    Lead Qualification Mode
+                <h3 className="text-white font-bold text-sm">Solar Expert AI</h3>
+                <p className="text-xs text-gold flex items-center gap-1 font-bold">
+                    <span className="w-1.5 h-1.5 bg-gold rounded-full animate-pulse"></span>
+                    Fast Track Engineering
                 </p>
             </div>
           </div>
@@ -82,10 +96,35 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
                 className={`max-w-[85%] p-4 rounded-2xl text-sm leading-relaxed ${
                   msg.role === 'user' 
                     ? 'bg-gold text-charcoal font-semibold rounded-tr-none' 
-                    : 'bg-white/5 text-gray-200 border border-white/10 rounded-tl-none'
+                    : msg.isError 
+                      ? 'bg-red-500/10 text-red-200 border border-red-500/20 rounded-tl-none'
+                      : 'bg-white/5 text-gray-200 border border-white/10 rounded-tl-none'
                 }`}
               >
                 {msg.text}
+                
+                {(msg.isError || msg.isBooking || msg.text.includes(CALENDLY_URL)) && (
+                  <div className="mt-4 flex flex-col gap-2">
+                    <a 
+                      href={CALENDLY_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 bg-gold text-charcoal py-3 px-4 rounded-lg font-black text-xs hover:bg-gold-light transition-all shadow-lg shadow-gold/20"
+                    >
+                      <Calendar size={14} /> Book Free 30-min Assessment <ExternalLink size={12} />
+                    </a>
+                    {msg.isError && (
+                      <a 
+                        href="https://wa.me/254722371250?text=Hi%2C%20I'm%20having%20trouble%20with%20the%20AI%20chat%20but%20want%20to%20book%20my%20solar%20assessment."
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2 bg-[#25D366] text-white py-2 px-4 rounded-lg font-bold text-xs hover:bg-[#1ebc57] transition-colors"
+                      >
+                        <MessageCircle size={14} /> Talk on WhatsApp
+                      </a>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           ))}
@@ -98,7 +137,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
                     <span className="w-1.5 h-1.5 bg-gold rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
                  </div>
                  <div className="text-[10px] text-gray-500 uppercase tracking-tighter flex items-center gap-1 font-bold">
-                   <Database size={10} className="animate-pulse" /> Analyzing Lead Quality...
+                   <Database size={10} className="animate-pulse" /> Engineering Link Active...
                  </div>
                </div>
              </div>
@@ -126,9 +165,9 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
               <Send size={20} />
             </button>
           </div>
-          <p className="text-[10px] text-gray-600 mt-2 text-center uppercase tracking-widest font-bold flex items-center justify-center gap-2">
-            SECURE LEAD TRANSFER ENCRYPTED
-          </p>
+          <div className="flex justify-center gap-4 mt-3">
+             <p className="text-[9px] text-gray-600 uppercase tracking-widest font-bold">Verified Engineering Portal</p>
+          </div>
         </div>
       </div>
     </div>

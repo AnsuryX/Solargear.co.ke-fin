@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 export interface Feature {
@@ -16,4 +17,5 @@ export interface ChatMessage {
   role: 'user' | 'model';
   text: string;
   isError?: boolean;
+  isBooking?: boolean;
 }

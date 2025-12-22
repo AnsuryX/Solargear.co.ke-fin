@@ -3,6 +3,7 @@ import { GoogleGenAI, Chat, GenerateContentResponse, FunctionDeclaration, Type }
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xrezgbrp';
+const BOOKING_LINK = 'https://calendly.com/solargearlrd/30min';
 
 // Define the function the AI can call to save a lead
 const submitLeadFunctionDeclaration: FunctionDeclaration = {
@@ -14,34 +15,36 @@ const submitLeadFunctionDeclaration: FunctionDeclaration = {
       fullName: { type: Type.STRING, description: 'The customers full name.' },
       phoneNumber: { type: Type.STRING, description: 'The WhatsApp or phone number.' },
       location: { type: Type.STRING, description: 'Where in Nairobi or Kenya they are located.' },
-      propertyType: { type: Type.STRING, description: 'Residential, Commercial, or Apartment.' },
-      budgetRange: { type: Type.STRING, description: 'The budget range they discussed.' },
-      leadScore: { type: Type.NUMBER, description: 'The calculated lead score (0-100).' },
-      notes: { type: Type.STRING, description: 'Summary of their pain points (e.g., high bills, blackouts).' }
+      solutionType: { type: Type.STRING, description: 'Home, Business, or Apartment.' },
+      urgency: { type: Type.STRING, description: 'Immediately, 1-3 months, or Researching.' },
+      notes: { type: Type.STRING, description: 'Summary of their pain points or specific needs.' }
     },
-    required: ['fullName', 'phoneNumber', 'location', 'leadScore'],
+    required: ['fullName', 'phoneNumber', 'solutionType'],
   },
 };
 
 const SYSTEM_INSTRUCTION = `
-# ROLE: Professional Solar Energy Consultant AI for "Solar Gear Ltd".
+# ROLE: High-Conversion Solar Consultant for "Solar Gear Ltd" (Nairobi).
 
 # OBJECTIVE:
-Pre-qualify prospects and use the 'submitLead' tool ONLY for hot leads (Score 70+).
+Quickly qualify the prospect by asking ONLY the core questions and booking a 30-minute assessment.
 
-# LEAD SCORING:
-- Owner: +30 | Pain: +20 | Budget $2k+: +25 | Timeline <3mo: +15 | Commercial: +10
+# CORE QUESTIONS (Ask naturally, one at a time):
+1. SOLUTION TYPE: "Are you looking for a solar solution for your Home, Business, or an Apartment here in Nairobi?"
+2. URGENCY: "How soon are you looking to switch to solar? (Immediately, 1-3 months, or just researching?)"
+3. CONTACT: "To prepare your custom engineering plan, what is your Name and best WhatsApp number?"
 
-# WORKFLOW:
-1. Follow the pre-qualification flow (Decision Power -> Property -> Pain -> Budget -> Timeline).
-2. If Score >= 70:
-   - Collect Full Name, Location, and Phone.
-   - CALL THE 'submitLead' FUNCTION IMMEDIATELY.
-   - Confirm to the user: "I've sent your details to our engineering team. Would you prefer a WhatsApp call or Google Meet for the consult?"
-3. If Score < 70: Do not call the tool. Politely offer the educational assessment on the website.
+# STRATEGY:
+- BE DIRECT: Don't waste time on long pre-qual if the user is engaged.
+- IF HESITANT/SKEPTICAL: Immediately pivot to the FREE Assessment. Say: "I understand. Most homeowners start with our Free 30-min Solar Readiness Assessment. No pressure, just data. Shall we book that for you?"
+- BOOKING LINK: Always mention this link for the final step: ${BOOKING_LINK}
 
-# CRITICAL:
-You MUST call 'submitLead' once you have the contact details for a qualified lead. Do not just say you will do it; execute the tool.
+# LEAD HANDOFF:
+As soon as you have the Solution Type and Contact Details, CALL the 'submitLead' tool.
+After calling the tool, say: "Perfect! I've sent your details to our engineers. Now, pick a time that works for you on our official calendar here: ${BOOKING_LINK}"
+
+# ERROR/GLITCH FALLBACK:
+"I'm experiencing a temporary grid sync error! 🛠️ Please book your Free 30-min Assessment directly here: ${BOOKING_LINK} or WhatsApp us at +254 722 371 250."
 `;
 
 let chatSession: Chat | null = null;
@@ -52,30 +55,31 @@ export const initializeChat = () => {
     config: {
       systemInstruction: SYSTEM_INSTRUCTION,
       tools: [{ functionDeclarations: [submitLeadFunctionDeclaration] }],
-      temperature: 0.7,
+      temperature: 0.6,
     },
   });
 };
 
 const handleToolCall = async (fc: any) => {
   if (fc.name === 'submitLead') {
-    console.log("AI SUBMITTING LEAD:", fc.args);
     try {
       const response = await fetch(FORMSPREE_ENDPOINT, {
         method: 'POST',
         headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...fc.args,
-          _subject: `AI LEAD: ${fc.args.fullName} (${fc.args.location})`,
-          message: `AI Score: ${fc.args.leadScore}. Notes: ${fc.args.notes}`
+          _subject: `AI LEAD: ${fc.args.fullName} (${fc.args.solutionType})`,
+          message: `Solution: ${fc.args.solutionType}. Urgency: ${fc.args.urgency}. Notes: ${fc.args.notes || 'N/A'}`
         }),
       });
-      return response.ok ? { status: "success", message: "Lead recorded in CRM" } : { status: "error" };
+      return response.ok 
+        ? { status: "success", message: "Lead data synced with Nairobi Engineering Hub." } 
+        : { status: "error", message: "Sync failed, manual follow-up required." };
     } catch (e) {
-      return { status: "error", message: "Failed to connect to CRM" };
+      return { status: "error", message: "Network timeout." };
     }
   }
-  return { error: "Unknown function" };
+  return { error: "Unknown tool" };
 };
 
 export const sendMessageToGemini = async (message: string): Promise<string> => {
@@ -86,7 +90,6 @@ export const sendMessageToGemini = async (message: string): Promise<string> => {
     
     let result = await chatSession.sendMessage({ message });
     
-    // Handle Function Calls (Tools)
     if (result.functionCalls && result.functionCalls.length > 0) {
       const functionResponses = [];
       for (const fc of result.functionCalls) {
@@ -98,16 +101,15 @@ export const sendMessageToGemini = async (message: string): Promise<string> => {
         });
       }
       
-      // Send the tool response back to Gemini to get the final conversational reply
       const finalResult = await chatSession.sendMessage({
         functionResponses: functionResponses
       });
-      return finalResult.text || "Lead details captured. What's next?";
+      return finalResult.text || "Details captured. Please book your slot on Calendly!";
     }
 
-    return result.text || "I'm listening...";
+    return result.text || "I'm here to help. Are you looking at a Home or Business solution?";
   } catch (error) {
     console.error("Gemini Error:", error);
-    return "I'm having a technical glitch. Please WhatsApp us directly at +254722371250.";
+    return `I'm having a technical glitch. Please book your Free 30-min Solar Assessment directly at ${BOOKING_LINK} or WhatsApp us at +254 722 371 250.`;
   }
 };
