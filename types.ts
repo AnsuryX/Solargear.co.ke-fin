@@ -11,6 +11,8 @@ export interface Testimonial {
   name: string;
   location: string;
   quote: string;
+  system: string;
+  rating: number;
 }
 
 export interface ChatMessage {

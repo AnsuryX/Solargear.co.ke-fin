@@ -11,6 +11,7 @@ import { FAQ } from './components/FAQ';
 import { Footer } from './components/Footer';
 import { ChatModal } from './components/ChatModal';
 import { CalculatorSection } from './components/CalculatorSection';
+import { TestimonialCarousel } from './components/TestimonialCarousel';
 
 function App() {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -36,6 +37,8 @@ function App() {
       <ProductSpotlight />
       
       <SocialProof />
+
+      <TestimonialCarousel />
       
       <OfferSection />
 
