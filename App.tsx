@@ -13,16 +13,10 @@ import { ChatModal } from './components/ChatModal';
 import { CalculatorSection } from './components/CalculatorSection';
 import { TestimonialCarousel } from './components/TestimonialCarousel';
 import { PackagesSection } from './components/PackagesSection';
+import { PackageSelectionGuide } from './components/PackageSelectionGuide';
 
 function App() {
   const [isChatOpen, setIsChatOpen] = useState(false);
-
-  const handleReserveScroll = () => {
-    const section = document.getElementById('reserve');
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   return (
     <div className="min-h-screen bg-charcoal text-white selection:bg-gold selection:text-charcoal font-sans">
@@ -37,6 +31,8 @@ function App() {
       <ProblemSection />
 
       <CalculatorSection />
+
+      <PackageSelectionGuide />
 
       <PackagesSection />
       
