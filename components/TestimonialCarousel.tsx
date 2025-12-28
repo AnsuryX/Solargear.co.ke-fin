@@ -20,10 +20,10 @@ const testimonials: Testimonial[] = [
     rating: 5
   },
   {
-    name: "Dr. Omondi",
+    name: "Peter Mwangi",
     location: "Syokimau",
-    system: "10kW Commercial Setup",
-    quote: "Reliability was my biggest concern for my clinic. Solar Gear delivered a robust system that powers all my medical equipment flawlessly.",
+    system: "10kW Elite Independence",
+    quote: "Moving to full solar independence was the best decision for my family. Solar Gear's attention to detail during the residential audit was impressive.",
     rating: 5
   },
   {
@@ -50,16 +50,15 @@ export const TestimonialCarousel: React.FC = () => {
 
   return (
     <section className="py-24 bg-[#0A0A0A] relative overflow-hidden border-t border-white/5">
-      {/* Abstract background light */}
       <div className="absolute top-1/2 left-0 -translate-y-1/2 w-64 h-64 bg-gold/10 rounded-full blur-[100px] pointer-events-none"></div>
       
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">Solar Success Stories</h2>
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">Nairobi Home Success Stories</h2>
           <p className="text-gray-500 max-w-2xl mx-auto uppercase tracking-widest text-xs font-bold">Trusted by Nairobi's Elite Homeowners</p>
         </div>
 
-        <div className="max-w-4xl mx-auto relative h-[400px] md:h-[350px]">
+        <div className="max-w-4xl mx-auto relative h-[450px] md:h-[350px]">
           <AnimatePresence mode="wait">
             <motion.div
               key={index}
@@ -106,28 +105,14 @@ export const TestimonialCarousel: React.FC = () => {
             </motion.div>
           </AnimatePresence>
 
-          {/* Controls */}
           <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 flex items-center gap-8">
-            <button 
-              onClick={prev}
-              className="p-3 rounded-full border border-white/10 text-gray-400 hover:text-gold hover:border-gold/50 transition-all bg-white/5"
-            >
-              <ChevronLeft size={24} />
-            </button>
+            <button onClick={prev} className="p-3 rounded-full border border-white/10 text-gray-400 hover:text-gold transition-all bg-white/5"><ChevronLeft size={24} /></button>
             <div className="flex gap-2">
               {testimonials.map((_, i) => (
-                <div 
-                  key={i} 
-                  className={`h-1.5 rounded-full transition-all duration-300 ${i === index ? 'w-8 bg-gold' : 'w-2 bg-white/20'}`}
-                />
+                <div key={i} className={`h-1.5 rounded-full transition-all duration-300 ${i === index ? 'w-8 bg-gold' : 'w-2 bg-white/20'}`}/>
               ))}
             </div>
-            <button 
-              onClick={next}
-              className="p-3 rounded-full border border-white/10 text-gray-400 hover:text-gold hover:border-gold/50 transition-all bg-white/5"
-            >
-              <ChevronRight size={24} />
-            </button>
+            <button onClick={next} className="p-3 rounded-full border border-white/10 text-gray-400 hover:text-gold transition-all bg-white/5"><ChevronRight size={24} /></button>
           </div>
         </div>
       </div>

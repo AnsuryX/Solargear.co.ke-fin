@@ -29,23 +29,23 @@ export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
               className="max-w-2xl pointer-events-auto"
             >
               <div className="inline-block px-4 py-1.5 mb-6 border border-gold/30 rounded-full bg-gold/5 backdrop-blur-md">
-                <span className="text-gold text-[10px] md:text-xs font-bold uppercase tracking-[0.2em]">Top-Rated Solar Installers Kenya • Nairobi</span>
+                <span className="text-gold text-[10px] md:text-xs font-bold uppercase tracking-[0.2em]">Premium Home Solar • Nairobi & Kenya</span>
               </div>
               
               <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-[1.1] tracking-tight">
-                Premium <br/>
-                Solar Backup <br/>
+                Your Home <br/>
+                Powered By <br/>
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold via-gold-light to-gold-dark">
-                  In Nairobi.
+                  The Sun.
                 </span>
               </h1>
               
               <h2 className="text-xl md:text-2xl text-white/90 font-medium mb-6">
-                Clean Energy for Nairobi Homeowners — <span className="text-gold">Sustainable Living Kenya.</span>
+                Premium Residential Solar — <span className="text-gold">Zero KPLC Bills.</span>
               </h2>
 
               <p className="text-lg text-gray-400 mb-10 font-light leading-relaxed max-w-xl">
-                Tired of rising KPLC bills and frequent power cuts? We provide the most reliable <strong>Solar Backup in Nairobi</strong>, helping you switch to clean energy without hidden costs.
+                Tired of rising bills and blackouts at home? We specialize in <strong>Residential Solar Backup in Nairobi</strong>, helping you transition your family to reliable, clean energy.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
@@ -55,7 +55,7 @@ export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
                   onClick={onProductClick}
                   className="bg-gold hover:bg-gold-light text-charcoal font-bold py-4 px-10 rounded-sm transition-all duration-300 shadow-xl shadow-gold/10 flex items-center justify-center gap-2"
                 >
-                  Reserve My Slot
+                  View Home Packages
                   <ArrowRight size={20} />
                 </motion.button>
                 
@@ -66,7 +66,7 @@ export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
                   className="bg-white/5 border border-white/10 hover:border-white/30 text-white py-4 px-10 rounded-sm transition-all duration-300 backdrop-blur-md flex items-center justify-center gap-2 group"
                 >
                   <MessageCircle size={20} className="group-hover:text-gold transition-colors" />
-                  Chat with Engineer
+                  Chat with Home Engineer
                 </motion.button>
               </div>
             </motion.div>

@@ -12,6 +12,7 @@ import { Footer } from './components/Footer';
 import { ChatModal } from './components/ChatModal';
 import { CalculatorSection } from './components/CalculatorSection';
 import { TestimonialCarousel } from './components/TestimonialCarousel';
+import { PackagesSection } from './components/PackagesSection';
 
 function App() {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -27,12 +28,17 @@ function App() {
     <div className="min-h-screen bg-charcoal text-white selection:bg-gold selection:text-charcoal font-sans">
       <Hero 
         onChatClick={() => setIsChatOpen(true)} 
-        onProductClick={handleReserveScroll}
+        onProductClick={() => {
+          const section = document.getElementById('packages');
+          if (section) section.scrollIntoView({ behavior: 'smooth' });
+        }}
       />
       
       <ProblemSection />
 
       <CalculatorSection />
+
+      <PackagesSection />
       
       <ProductSpotlight />
       

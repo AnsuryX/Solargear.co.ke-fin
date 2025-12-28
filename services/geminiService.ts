@@ -10,41 +10,46 @@ const submitLeadFunctionDeclaration: FunctionDeclaration = {
   name: 'submitLead',
   parameters: {
     type: Type.OBJECT,
-    description: 'Submit a qualified solar lead to the sales team for follow-up.',
+    description: 'Submit a qualified residential solar lead to the sales team.',
     properties: {
       fullName: { type: Type.STRING, description: 'The customers full name.' },
       phoneNumber: { type: Type.STRING, description: 'The WhatsApp or phone number.' },
-      location: { type: Type.STRING, description: 'Where in Nairobi or Kenya they are located.' },
-      solutionType: { type: Type.STRING, description: 'Home, Business, or Apartment.' },
+      homeType: { type: Type.STRING, description: 'Villa, Townhouse, or Apartment.' },
+      packageInterest: { type: Type.STRING, description: 'SolarStart, SolarFamily, or SolarElite.' },
       urgency: { type: Type.STRING, description: 'Immediately, 1-3 months, or Researching.' },
-      notes: { type: Type.STRING, description: 'Summary of their pain points or specific needs.' }
+      notes: { type: Type.STRING, description: 'Specific home needs (e.g., number of rooms, high consumption).' }
     },
-    required: ['fullName', 'phoneNumber', 'solutionType'],
+    required: ['fullName', 'phoneNumber', 'homeType'],
   },
 };
 
 const SYSTEM_INSTRUCTION = `
-# ROLE: High-Conversion Solar Consultant for "Solar Gear Ltd" (Nairobi).
+# ROLE: High-Conversion Residential Solar Consultant for "Solar Gear Ltd" (Nairobi).
 
 # OBJECTIVE:
-Quickly qualify the prospect by asking ONLY the core questions and booking a 30-minute assessment.
+We focus EXCLUSIVELY on Home Solar. Quickly qualify the homeowner by asking core questions and booking a 30-minute residential assessment.
 
-# CORE QUESTIONS (Ask naturally, one at a time):
-1. SOLUTION TYPE: "Are you looking for a solar solution for your Home, Business, or an Apartment here in Nairobi?"
-2. URGENCY: "How soon are you looking to switch to solar? (Immediately, 1-3 months, or just researching?)"
-3. CONTACT: "To prepare your custom engineering plan, what is your Name and best WhatsApp number?"
+# CORE PACKAGES:
+1. SolarStart™ Backup (KES 285,000) - Basic lights, Wi-Fi, Fridge.
+2. SolarFamily™ Hybrid (KES 595,000) - Standard family home usage.
+3. SolarElite™ Independence (KES 1,450,000) - Full energy independence.
+
+# CORE QUESTIONS:
+1. HOME TYPE: "Is your home in Nairobi a Villa, Townhouse, or an Apartment? 😊"
+2. PACKAGE: "Are you leaning towards a basic Backup (SolarStart), a full Family Hybrid (SolarFamily), or total Independence (SolarElite)?"
+3. CONTACT: "What is your Name and best WhatsApp number so I can send you the exact hardware list for your home?"
 
 # STRATEGY:
-- BE DIRECT: Don't waste time on long pre-qual if the user is engaged.
-- IF HESITANT/SKEPTICAL: Immediately pivot to the FREE Assessment. Say: "I understand. Most homeowners start with our Free 30-min Solar Readiness Assessment. No pressure, just data. Shall we book that for you?"
-- BOOKING LINK: Always mention this link for the final step: ${BOOKING_LINK}
+- BE DIRECT: We only do residential. If they ask about commercial, politely decline and stay on homes.
+- IF HESITANT: Immediately pivot to the FREE Assessment. Say: "I understand. Most Nairobi homeowners start with our Free 30-min Residential Assessment. Shall we book that?"
+- BOOKING LINK: ${BOOKING_LINK}
 
 # LEAD HANDOFF:
-As soon as you have the Solution Type and Contact Details, CALL the 'submitLead' tool.
-After calling the tool, say: "Perfect! I've sent your details to our engineers. Now, pick a time that works for you on our official calendar here: ${BOOKING_LINK}"
+Once you have Home Type and Contact, CALL 'submitLead'.
+Follow-up: "I've notified our engineering hub. Pick a time for your home visit here: ${BOOKING_LINK}"
 
-# ERROR/GLITCH FALLBACK:
-"I'm experiencing a temporary grid sync error! 🛠️ Please book your Free 30-min Assessment directly here: ${BOOKING_LINK} or WhatsApp us at +254 722 371 250."
+# ERROR FALLBACK:
+"I'm experiencing a temporary sync error! 🛠️ Please book your Free 30-min Home Assessment directly here: ${BOOKING_LINK} or WhatsApp us at +254 722 371 250."
 `;
 
 let chatSession: Chat | null = null;
@@ -68,15 +73,15 @@ const handleToolCall = async (fc: any) => {
         headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...fc.args,
-          _subject: `AI LEAD: ${fc.args.fullName} (${fc.args.solutionType})`,
-          message: `Solution: ${fc.args.solutionType}. Urgency: ${fc.args.urgency}. Notes: ${fc.args.notes || 'N/A'}`
+          _subject: `RESIDENTIAL LEAD: ${fc.args.fullName}`,
+          message: `Home: ${fc.args.homeType}. Interest: ${fc.args.packageInterest}. Note: ${fc.args.notes || 'N/A'}`
         }),
       });
       return response.ok 
-        ? { status: "success", message: "Lead data synced with Nairobi Engineering Hub." } 
-        : { status: "error", message: "Sync failed, manual follow-up required." };
+        ? { status: "success", message: "Home engineering team notified." } 
+        : { status: "error", message: "Sync failed." };
     } catch (e) {
-      return { status: "error", message: "Network timeout." };
+      return { status: "error", message: "Timeout." };
     }
   }
   return { error: "Unknown tool" };
@@ -87,29 +92,18 @@ export const sendMessageToGemini = async (message: string): Promise<string> => {
 
   try {
     if (!chatSession) throw new Error("Chat not initialized");
-    
     let result = await chatSession.sendMessage({ message });
-    
     if (result.functionCalls && result.functionCalls.length > 0) {
       const functionResponses = [];
       for (const fc of result.functionCalls) {
         const response = await handleToolCall(fc);
-        functionResponses.push({
-          id: fc.id,
-          name: fc.name,
-          response: response,
-        });
+        functionResponses.push({ id: fc.id, name: fc.name, response: response });
       }
-      
-      const finalResult = await chatSession.sendMessage({
-        functionResponses: functionResponses
-      });
-      return finalResult.text || "Details captured. Please book your slot on Calendly!";
+      const finalResult = await chatSession.sendMessage({ functionResponses: functionResponses });
+      return finalResult.text || "Logged. Please book your slot on Calendly!";
     }
-
-    return result.text || "I'm here to help. Are you looking at a Home or Business solution?";
+    return result.text || "Tell me about your home.";
   } catch (error) {
-    console.error("Gemini Error:", error);
-    return `I'm having a technical glitch. Please book your Free 30-min Solar Assessment directly at ${BOOKING_LINK} or WhatsApp us at +254 722 371 250.`;
+    return `Technical glitch! Book your Free 30-min Assessment at ${BOOKING_LINK} or WhatsApp +254 722 371 250.`;
   }
 };

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Home, Briefcase, TrendingUp, Sun, MapPin } from 'lucide-react';
+import { Home, Zap, TrendingUp, Sun, MapPin } from 'lucide-react';
 
 export const SocialProof: React.FC = () => {
   return (
@@ -8,10 +8,10 @@ export const SocialProof: React.FC = () => {
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-2xl md:text-4xl font-bold text-white mb-4 uppercase tracking-wider">
-            Preferred Solar Installers in Kenya
+            Preferred Home Solar Installers in Nairobi
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            From Karen to Runda, we are the trusted choice for reliable solar backup in Nairobi. We serve clients who value long-term performance over cheap shortcuts.
+            From Karen to Runda, we are the trusted choice for families who refuse to compromise on energy quality. We specialize exclusively in high-end residential installations.
           </p>
         </div>
 
@@ -21,18 +21,18 @@ export const SocialProof: React.FC = () => {
               <Home size={24} />
             </div>
             <div>
-              <h3 className="text-white font-bold text-lg">Nairobi Homeowners</h3>
-              <p className="text-sm text-gray-400">Tired of high electricity bills and unreliable KPLC connections in the city.</p>
+              <h3 className="text-white font-bold text-lg">Suburban Homeowners</h3>
+              <p className="text-sm text-gray-400">Stopping high KPLC bills and unpredictable blackouts for families across the city.</p>
             </div>
           </div>
 
           <div className="flex items-center gap-4 p-6 bg-white/5 rounded-xl border border-white/10 hover:border-gold/30 transition-colors">
             <div className="p-3 bg-gold/10 rounded-full text-gold shrink-0">
-              <Briefcase size={24} />
+              <Zap size={24} />
             </div>
             <div>
-              <h3 className="text-white font-bold text-lg">Kenya Small Businesses</h3>
-              <p className="text-sm text-gray-400">Who need uninterruptible solar backup to keep operations running during blackouts.</p>
+              <h3 className="text-white font-bold text-lg">Reliable Backup</h3>
+              <p className="text-sm text-gray-400">Keeping home offices and medical equipment running 24/7 without interruption.</p>
             </div>
           </div>
 
@@ -41,8 +41,8 @@ export const SocialProof: React.FC = () => {
               <TrendingUp size={24} />
             </div>
             <div>
-              <h3 className="text-white font-bold text-lg">Smart Nairobi Investors</h3>
-              <p className="text-sm text-gray-400">Homeowners in Westlands, Lavington, and Syokimau increasing their property value.</p>
+              <h3 className="text-white font-bold text-lg">Property Appreciation</h3>
+              <p className="text-sm text-gray-400">Increasing resale value for homes in Lavington, Westlands, and Syokimau.</p>
             </div>
           </div>
 
@@ -51,8 +51,8 @@ export const SocialProof: React.FC = () => {
               <Sun size={24} />
             </div>
             <div>
-              <h3 className="text-white font-bold text-lg">Energy Independence Kenya</h3>
-              <p className="text-sm text-gray-400">Anyone looking for the best solar installers in Kenya for off-grid and hybrid setups.</p>
+              <h3 className="text-white font-bold text-lg">100% Green Families</h3>
+              <p className="text-sm text-gray-400">Transitioning to clean, quiet energy that doesn't rely on noisy generators.</p>
             </div>
           </div>
         </div>
