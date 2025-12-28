@@ -13,6 +13,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Solar Gear Ltd | Solar Backup Nairobi & Solar Installers Kenya</title>
+    
+    <!-- Performance Optimization: Preconnect to external domains -->
+    <link rel="preconnect" href="https://esm.sh" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -54,6 +60,8 @@
         background-color: #1A1A1A;
         color: white;
         font-family: 'Inter', sans-serif;
+        /* Prevent CLS (Cumulative Layout Shift) */
+        overflow-x: hidden;
       }
       /* Custom Scrollbar */
       ::-webkit-scrollbar {

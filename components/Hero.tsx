@@ -1,7 +1,7 @@
 
-import React from 'react';
-import { ArrowRight, MessageCircle } from 'lucide-react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { ArrowRight, MessageCircle, Star, ShieldCheck, Zap, Globe } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { SplineScene } from "./ui/spline";
 import { Card } from "./ui/card";
 import { Spotlight } from "./ui/spotlight";
@@ -11,79 +11,168 @@ interface HeroProps {
   onProductClick: () => void;
 }
 
+const FloatingBadge = ({ icon, text, delay }: { icon: React.ReactNode, text: string, delay: number }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay, duration: 0.8, ease: "easeOut" }}
+    className="hidden lg:flex items-center gap-3 px-4 py-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl"
+    style={{
+      boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+    }}
+  >
+    <div className="text-gold">{icon}</div>
+    <span className="text-[10px] font-bold uppercase tracking-widest text-white/80">{text}</span>
+  </motion.div>
+);
+
 export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
+  const { scrollY } = useScroll();
+  const y1 = useTransform(scrollY, [0, 500], [0, 200]);
+
+  useEffect(() => {
+    const checkScreenSize = () => setIsLargeScreen(window.innerWidth >= 1024);
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
   return (
-    <section className="h-screen min-h-[700px] w-full bg-charcoal relative overflow-hidden">
-      <Card className="w-full h-full border-none bg-transparent rounded-none relative overflow-hidden">
-        <Spotlight
-          className="-top-40 left-0 md:left-60 md:-top-20 z-10"
-          fill="#D4AF37"
-        />
-        
-        <div className="flex flex-col-reverse lg:flex-row h-full relative z-20">
-          <div className="flex-1 p-6 md:p-16 flex flex-col justify-center relative z-20 pointer-events-none lg:pointer-events-auto">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="max-w-2xl pointer-events-auto"
-            >
-              <div className="inline-block px-4 py-1.5 mb-6 border border-gold/30 rounded-full bg-gold/5 backdrop-blur-md">
-                <span className="text-gold text-[10px] md:text-xs font-bold uppercase tracking-[0.2em]">Premium Home Solar • Nairobi & Kenya</span>
-              </div>
-              
-              <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-[1.1] tracking-tight">
-                Your Home <br/>
-                Powered By <br/>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold via-gold-light to-gold-dark">
-                  The Sun.
-                </span>
-              </h1>
-              
-              <h2 className="text-xl md:text-2xl text-white/90 font-medium mb-6">
-                Premium Residential Solar — <span className="text-gold">Zero KPLC Bills.</span>
-              </h2>
-
-              <p className="text-lg text-gray-400 mb-10 font-light leading-relaxed max-w-xl">
-                Tired of rising bills and blackouts at home? We specialize in <strong>Residential Solar Backup in Nairobi</strong>, helping you transition your family to reliable, clean energy.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-4">
-                <motion.button 
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={onProductClick}
-                  className="bg-gold hover:bg-gold-light text-charcoal font-bold py-4 px-10 rounded-sm transition-all duration-300 shadow-xl shadow-gold/10 flex items-center justify-center gap-2"
-                >
-                  View Home Packages
-                  <ArrowRight size={20} />
-                </motion.button>
-                
-                <motion.button 
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={onChatClick}
-                  className="bg-white/5 border border-white/10 hover:border-white/30 text-white py-4 px-10 rounded-sm transition-all duration-300 backdrop-blur-md flex items-center justify-center gap-2 group"
-                >
-                  <MessageCircle size={20} className="group-hover:text-gold transition-colors" />
-                  Chat with Home Engineer
-                </motion.button>
-              </div>
-            </motion.div>
+    <section className="relative min-h-screen w-full bg-charcoal flex items-center overflow-hidden">
+      {/* Background Layer: 3D or Fallback */}
+      <div className="absolute inset-0 z-0">
+        {isLargeScreen ? (
+          <div className="w-full h-full opacity-60 lg:opacity-100">
+            <SplineScene 
+              scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+              className="w-full h-full"
+            />
           </div>
+        ) : (
+          <div className="absolute inset-0 bg-[#121212]">
+            <div className="absolute top-[-10%] right-[-10%] w-[80%] h-[80%] bg-gold/10 blur-[120px] rounded-full animate-pulse"></div>
+            <div className="absolute bottom-0 left-0 w-full h-full bg-gradient-to-t from-charcoal via-transparent to-transparent"></div>
+          </div>
+        )}
+      </div>
 
-          <div className="flex-1 relative h-[45vh] lg:h-full w-full">
-            <div className="absolute inset-0 z-0">
-               <SplineScene 
-                 scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-                 className="w-full h-full"
-               />
+      {/* Decorative Spotlight */}
+      <Spotlight
+        className="-top-40 left-0 md:left-60 md:-top-20 z-10 opacity-30 md:opacity-60"
+        fill="#D4AF37"
+      />
+
+      <div className="container mx-auto px-6 relative z-20 pt-20 lg:pt-0">
+        <div className="max-w-4xl">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            style={{ y: y1 }}
+          >
+            {/* Tagline */}
+            <div className="flex items-center gap-3 mb-8">
+              <div className="h-[1px] w-12 bg-gold/50"></div>
+              <span className="text-gold text-[10px] md:text-xs font-black uppercase tracking-[0.4em]">
+                Exclusively Residential • Nairobi
+              </span>
             </div>
-            <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-charcoal via-charcoal/50 to-transparent lg:hidden pointer-events-none"></div>
-            <div className="absolute left-0 top-0 h-full w-32 bg-gradient-to-r from-charcoal via-charcoal/20 to-transparent hidden lg:block pointer-events-none"></div>
-          </div>
+
+            {/* Main Headline */}
+            <h1 className="text-6xl md:text-8xl font-black text-white mb-8 leading-[0.95] tracking-tighter">
+              BEYOND <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold via-gold-light to-gold-dark">
+                BACKUP.
+              </span>
+            </h1>
+
+            {/* High-Impact Subtext */}
+            <div className="flex flex-col md:flex-row gap-8 items-start mb-12">
+              <div className="max-w-md">
+                <p className="text-xl md:text-2xl text-white/90 font-medium mb-4 leading-tight">
+                  Premium Solar Engineering for <span className="text-gold italic">Nairobi's Finest Homes.</span>
+                </p>
+                <p className="text-gray-400 font-light leading-relaxed">
+                  We don't just install panels; we design energy independence. Stop KPLC reliance today with Kenya's most trusted residential specialists.
+                </p>
+              </div>
+
+              {/* Quick Stats Grid */}
+              <div className="grid grid-cols-2 gap-4 w-full md:w-auto">
+                <div className="p-4 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-sm">
+                  <div className="text-gold font-black text-2xl">200+</div>
+                  <div className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Homes Powered</div>
+                </div>
+                <div className="p-4 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-sm">
+                  <div className="text-gold font-black text-2xl">0%</div>
+                  <div className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Blackout Risk</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Dynamic Buttons */}
+            <div className="flex flex-col sm:flex-row gap-6">
+              <motion.button 
+                whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(212, 175, 55, 0.3)" }}
+                whileTap={{ scale: 0.95 }}
+                onClick={onProductClick}
+                className="relative group overflow-hidden bg-gold text-charcoal font-black py-5 px-12 rounded-sm transition-all duration-500 flex items-center justify-center gap-3"
+              >
+                <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                EXPLORE PACKAGES
+                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              </motion.button>
+              
+              <motion.button 
+                whileHover={{ backgroundColor: "rgba(255, 255, 255, 0.1)" }}
+                onClick={onChatClick}
+                className="bg-transparent border-2 border-white/20 hover:border-gold/50 text-white py-5 px-12 rounded-sm font-bold transition-all flex items-center justify-center gap-3 group"
+              >
+                <MessageCircle size={20} className="group-hover:text-gold transition-colors" />
+                CHAT WITH ENGINEER
+              </motion.button>
+            </div>
+          </motion.div>
         </div>
-      </Card>
+      </div>
+
+      {/* Floating Elements for visual depth */}
+      <div className="absolute top-1/4 right-20 space-y-4 z-10 pointer-events-none hidden xl:block">
+        <FloatingBadge icon={<ShieldCheck size={18} />} text="Tier 1 Tech Only" delay={1.2} />
+        <FloatingBadge icon={<Zap size={18} />} text="Instant Switching" delay={1.4} />
+        <FloatingBadge icon={<Globe size={18} />} text="Nairobi Wide Support" delay={1.6} />
+      </div>
+
+      {/* Trust Pilot Style Ribbon */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2, duration: 1 }}
+        className="absolute bottom-10 left-6 flex items-center gap-4 text-white/30 text-[10px] font-bold uppercase tracking-[0.3em]"
+      >
+        <div className="flex gap-1">
+          {[...Array(5)].map((_, i) => <Star key={i} size={10} className="fill-gold text-gold" />)}
+        </div>
+        5.0 Average Customer Rating
+      </motion.div>
+
+      {/* Scroll Indicator */}
+      <motion.div 
+        animate={{ y: [0, 10, 0] }}
+        transition={{ repeat: Infinity, duration: 2 }}
+        className="absolute bottom-10 right-10 hidden md:flex flex-col items-center gap-2 text-white/20"
+      >
+        <span className="text-[10px] uppercase font-bold tracking-widest vertical-text">Scroll</span>
+        <div className="w-[1px] h-12 bg-gradient-to-b from-white/20 to-transparent"></div>
+      </motion.div>
+
+      <style>{`
+        .vertical-text {
+          writing-mode: vertical-rl;
+          text-orientation: mixed;
+        }
+      `}</style>
     </section>
   );
 };

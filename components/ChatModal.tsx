@@ -10,6 +10,7 @@ interface ChatModalProps {
 }
 
 const CALENDLY_URL = "https://calendly.com/solargearlrd/30min";
+const WHATSAPP_FALLBACK = "I'm having a temporary connection issue. Please try again in a moment or use the WhatsApp option to connect directly with our engineers.";
 
 export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -37,7 +38,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
 
     try {
       const responseText = await sendMessageToGemini(userText);
-      const isSystemError = responseText.includes("technical glitch") || responseText.includes("sync error");
+      const isSystemError = responseText.includes("temporary connection issue") || responseText.includes("WhatsApp option");
       const isBookingReady = responseText.includes("calendly.com") || responseText.includes("book your slot");
       
       setMessages(prev => [...prev, { 
@@ -49,7 +50,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
     } catch (error) {
         setMessages(prev => [...prev, { 
           role: 'model', 
-          text: "I'm having trouble connecting. Please book your Free 30-min Solar Assessment directly via our calendar.", 
+          text: WHATSAPP_FALLBACK, 
           isError: true 
         }]);
     } finally {

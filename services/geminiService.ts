@@ -4,6 +4,7 @@ import { GoogleGenAI, Chat, GenerateContentResponse, FunctionDeclaration, Type }
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xrezgbrp';
 const BOOKING_LINK = 'https://calendly.com/solargearlrd/30min';
+const WHATSAPP_NUMBER = '+254 722 371 250';
 
 // Define the function the AI can call to save a lead
 const submitLeadFunctionDeclaration: FunctionDeclaration = {
@@ -22,6 +23,8 @@ const submitLeadFunctionDeclaration: FunctionDeclaration = {
     required: ['fullName', 'phoneNumber', 'homeType'],
   },
 };
+
+const ERROR_MESSAGE = "I'm having a temporary connection issue. Please try again in a moment or use the WhatsApp option to connect directly with our engineers.";
 
 const SYSTEM_INSTRUCTION = `
 # ROLE: High-Conversion Residential Solar Consultant for "Solar Gear Ltd" (Nairobi).
@@ -49,7 +52,7 @@ Once you have Home Type and Contact, CALL 'submitLead'.
 Follow-up: "I've notified our engineering hub. Pick a time for your home visit here: ${BOOKING_LINK}"
 
 # ERROR FALLBACK:
-"I'm experiencing a temporary sync error! 🛠️ Please book your Free 30-min Home Assessment directly here: ${BOOKING_LINK} or WhatsApp us at +254 722 371 250."
+${ERROR_MESSAGE}
 `;
 
 let chatSession: Chat | null = null;
@@ -60,50 +63,46 @@ export const initializeChat = () => {
     config: {
       systemInstruction: SYSTEM_INSTRUCTION,
       tools: [{ functionDeclarations: [submitLeadFunctionDeclaration] }],
-      temperature: 0.6,
+      temperature: 0.7,
     },
   });
 };
 
-const handleToolCall = async (fc: any) => {
-  if (fc.name === 'submitLead') {
-    try {
-      const response = await fetch(FORMSPREE_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...fc.args,
-          _subject: `RESIDENTIAL LEAD: ${fc.args.fullName}`,
-          message: `Home: ${fc.args.homeType}. Interest: ${fc.args.packageInterest}. Note: ${fc.args.notes || 'N/A'}`
-        }),
-      });
-      return response.ok 
-        ? { status: "success", message: "Home engineering team notified." } 
-        : { status: "error", message: "Sync failed." };
-    } catch (e) {
-      return { status: "error", message: "Timeout." };
-    }
+const submitLeadToFormspree = async (args: any) => {
+  try {
+    await fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...args, source: 'AI Chat' }),
+    });
+    return "Lead successfully recorded. Engineers notified.";
+  } catch (e) {
+    console.error("Formspree error", e);
+    return "Failed to record lead, but I will tell the user to use WhatsApp.";
   }
-  return { error: "Unknown tool" };
 };
 
 export const sendMessageToGemini = async (message: string): Promise<string> => {
   if (!chatSession) initializeChat();
 
   try {
-    if (!chatSession) throw new Error("Chat not initialized");
-    let result = await chatSession.sendMessage({ message });
-    if (result.functionCalls && result.functionCalls.length > 0) {
-      const functionResponses = [];
-      for (const fc of result.functionCalls) {
-        const response = await handleToolCall(fc);
-        functionResponses.push({ id: fc.id, name: fc.name, response: response });
+    const response = await chatSession!.sendMessage({ message });
+    
+    if (response.functionCalls) {
+      for (const fc of response.functionCalls) {
+        if (fc.name === 'submitLead') {
+          const result = await submitLeadToFormspree(fc.args);
+          const followUp = await chatSession!.sendMessage({
+            message: `The user has submitted their details. Result: ${result}. Now confirm to the user that an engineer will reach out and provide the booking link ${BOOKING_LINK}.`
+          });
+          return followUp.text || "Details received! Please book your assessment here: " + BOOKING_LINK;
+        }
       }
-      const finalResult = await chatSession.sendMessage({ functionResponses: functionResponses });
-      return finalResult.text || "Logged. Please book your slot on Calendly!";
     }
-    return result.text || "Tell me about your home.";
+
+    return response.text || ERROR_MESSAGE;
   } catch (error) {
-    return `Technical glitch! Book your Free 30-min Assessment at ${BOOKING_LINK} or WhatsApp +254 722 371 250.`;
+    console.error("Gemini Error:", error);
+    return ERROR_MESSAGE;
   }
 };
