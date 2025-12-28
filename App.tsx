@@ -14,9 +14,18 @@ import { CalculatorSection } from './components/CalculatorSection';
 import { TestimonialCarousel } from './components/TestimonialCarousel';
 import { PackagesSection } from './components/PackagesSection';
 import { PackageSelectionGuide } from './components/PackageSelectionGuide';
+import { PackagePurchaseModal } from './components/PackagePurchaseModal';
 
 function App() {
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [purchaseModal, setPurchaseModal] = useState<{ isOpen: boolean; packageName: string }>({
+    isOpen: false,
+    packageName: ''
+  });
+
+  const handlePackageSelect = (name: string) => {
+    setPurchaseModal({ isOpen: true, packageName: name });
+  };
 
   return (
     <div className="min-h-screen bg-charcoal text-white selection:bg-gold selection:text-charcoal font-sans">
@@ -34,7 +43,7 @@ function App() {
 
       <PackageSelectionGuide />
 
-      <PackagesSection />
+      <PackagesSection onPackageSelect={handlePackageSelect} />
       
       <ProductSpotlight />
       
@@ -55,6 +64,12 @@ function App() {
       <ChatModal 
         isOpen={isChatOpen} 
         onClose={() => setIsChatOpen(false)} 
+      />
+
+      <PackagePurchaseModal 
+        isOpen={purchaseModal.isOpen}
+        packageName={purchaseModal.packageName}
+        onClose={() => setPurchaseModal({ ...purchaseModal, isOpen: false })}
       />
     </div>
   );

@@ -3,6 +3,10 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Check, Zap, Home, ShieldCheck, ArrowRight, Star } from 'lucide-react';
 
+interface PackagesSectionProps {
+  onPackageSelect: (name: string) => void;
+}
+
 const packages = [
   {
     name: "SolarStart™ Backup",
@@ -51,12 +55,7 @@ const packages = [
   }
 ];
 
-export const PackagesSection: React.FC = () => {
-  const scrollToReserve = () => {
-    const section = document.getElementById('reserve');
-    if (section) section.scrollIntoView({ behavior: 'smooth' });
-  };
-
+export const PackagesSection: React.FC<PackagesSectionProps> = ({ onPackageSelect }) => {
   return (
     <section id="packages" className="py-24 bg-[#0A0A0A] relative overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
@@ -117,7 +116,7 @@ export const PackagesSection: React.FC = () => {
               </ul>
 
               <button 
-                onClick={scrollToReserve}
+                onClick={() => onPackageSelect(pkg.name)}
                 className={`w-full py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all flex items-center justify-center gap-2 group ${
                   pkg.highlight 
                     ? 'bg-gold text-charcoal hover:bg-gold-light' 
