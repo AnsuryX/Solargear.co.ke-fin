@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { ProblemSection } from './components/ProblemSection';
 import { ProductSpotlight } from './components/ProductSpotlight';
@@ -29,6 +30,8 @@ function App() {
 
   return (
     <div className="min-h-screen bg-charcoal text-white selection:bg-gold selection:text-charcoal font-sans">
+      <Header />
+      
       <Hero 
         onChatClick={() => setIsChatOpen(true)} 
         onProductClick={() => {

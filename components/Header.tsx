@@ -1,0 +1,64 @@
+
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Logo } from './Logo';
+import { Phone, ArrowRight } from 'lucide-react';
+
+export const Header: React.FC = () => {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  return (
+    <motion.header
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      className={`fixed top-0 left-0 w-full z-[80] transition-all duration-500 ${
+        scrolled ? 'py-4 bg-charcoal/80 backdrop-blur-xl border-b border-white/5 shadow-2xl' : 'py-8 bg-transparent'
+      }`}
+    >
+      <div className="container mx-auto px-6 flex justify-between items-center">
+        <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <Logo size={scrolled ? 32 : 40} />
+        </button>
+
+        <nav className="hidden lg:flex items-center gap-10">
+          {['Packages', 'Calculator', 'FAQ'].map((item) => (
+            <button
+              key={item}
+              onClick={() => scrollToSection(item.toLowerCase())}
+              className="text-xs font-black uppercase tracking-widest text-gray-400 hover:text-gold transition-colors"
+            >
+              {item}
+            </button>
+          ))}
+        </nav>
+
+        <div className="flex items-center gap-6">
+          <a href="tel:+254722371250" className="hidden md:flex items-center gap-2 text-white hover:text-gold transition-colors">
+            <Phone size={16} className="text-gold" />
+            <span className="text-xs font-bold">+254 722 371 250</span>
+          </a>
+          
+          <button
+            onClick={() => scrollToSection('reserve')}
+            className={`px-6 py-3 rounded-full font-black text-[10px] uppercase tracking-widest transition-all ${
+              scrolled ? 'bg-gold text-charcoal hover:bg-gold-light' : 'bg-white/10 text-white hover:bg-white/20'
+            }`}
+          >
+            Get Free Assessment
+          </button>
+        </div>
+      </div>
+    </motion.header>
+  );
+};

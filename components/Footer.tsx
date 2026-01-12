@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Phone, MapPin, Mail, ChevronRight, Globe, ShieldCheck } from 'lucide-react';
+import { Logo } from './Logo';
 
 export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -24,10 +25,7 @@ export const Footer: React.FC = () => {
           
           {/* Brand & Mission */}
           <div className="space-y-6">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gold rounded-lg flex items-center justify-center font-black text-charcoal text-xl">S</div>
-              <h3 className="text-xl font-black text-white tracking-tighter uppercase">Solar Gear Ltd.</h3>
-            </div>
+            <Logo />
             <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
               Specializing in premium <strong className="text-gray-300">Home Solar Engineering</strong> across Kenya. We empower families nationwide with reliable, clean, and quiet energy independence.
             </p>
