@@ -1,6 +1,10 @@
+
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion as motionImport, AnimatePresence } from 'framer-motion';
 import { Send, Loader2, CheckCircle2, MessageCircle, AlertCircle, TrendingUp } from 'lucide-react';
+
+// Fix for framer-motion type mismatch in the current environment
+const motion = motionImport as any;
 
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xrezgbrp';
 
@@ -51,7 +55,7 @@ export const LeadMagnet: React.FC = () => {
               viewport={{ once: true }}
             >
               <div className="inline-block px-4 py-1 mb-6 border border-gold/40 rounded-full bg-gold/10 backdrop-blur-md">
-                <span className="text-gold text-xs font-bold uppercase tracking-widest">Nairobi Early Access</span>
+                <span className="text-gold text-xs font-bold uppercase tracking-widest">Kenya Early Access</span>
               </div>
               <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
                 Claim Your <span className="text-gold">Solar Readiness Assessment</span> 🚀
@@ -62,7 +66,7 @@ export const LeadMagnet: React.FC = () => {
               </div>
               
               <p className="text-gray-400 text-lg mb-10 leading-relaxed max-w-lg">
-                Stop guessing. Get a professional engineer-led audit of your property and current bills. No strings attached.
+                Stop guessing. Get a professional engineer-led audit of your property and current bills. No strings attached, anywhere in Kenya.
               </p>
               
               <div className="bg-white/5 border border-white/10 rounded-2xl p-8 mb-8 shadow-inner">
@@ -72,10 +76,10 @@ export const LeadMagnet: React.FC = () => {
                 </h4>
                 <ul className="space-y-4">
                   {[
-                    { label: "Exact system size", sub: "Based on your actual consumption" },
-                    { label: "Estimated cost", sub: "Complete hardware & labor breakdown" },
-                    { label: "Backup coverage", sub: "Know exactly how long you stay powered" },
-                    { label: "Clear next steps", sub: "A roadmap to energy independence" }
+                    { label: "Exact system size", sub: "Based on your actual location and sun hours" },
+                    { label: "Estimated cost", sub: "Complete hardware & logistics breakdown" },
+                    { label: "Backup coverage", sub: "Know exactly how long you stay powered during outages" },
+                    { label: "Clear next steps", sub: "A roadmap to energy independence for your home" }
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-4">
                       <CheckCircle2 className="text-gold shrink-0 mt-1" size={20} />
@@ -110,7 +114,7 @@ export const LeadMagnet: React.FC = () => {
                     </div>
                     <h3 className="text-white font-bold text-3xl mb-4">Spot Reserved!</h3>
                     <p className="text-gray-400 mb-8 leading-relaxed">
-                      Your KES 5,000 Solar Readiness Assessment is now reserved. Our team will WhatsApp you within 24 hours to schedule the visit.
+                      Your KES 5,000 Solar Readiness Assessment is now reserved. Our nationwide engineering team will WhatsApp you within 24 hours to schedule the visit.
                     </p>
                     <button 
                       onClick={() => setStatus('idle')} 

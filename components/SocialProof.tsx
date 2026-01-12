@@ -8,10 +8,10 @@ export const SocialProof: React.FC = () => {
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-2xl md:text-4xl font-bold text-white mb-4 uppercase tracking-wider">
-            Preferred Home Solar Installers in Nairobi
+            Preferred Home Solar Installers in Kenya
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            From Karen to Runda, we are the trusted choice for families who refuse to compromise on energy quality. We specialize exclusively in high-end residential installations.
+            From the bustling streets of Nairobi to the serene coast of Mombasa and the rural heartlands, we are the trusted choice for families who refuse to compromise on energy quality.
           </p>
         </div>
 
@@ -21,8 +21,8 @@ export const SocialProof: React.FC = () => {
               <Home size={24} />
             </div>
             <div>
-              <h3 className="text-white font-bold text-lg">Suburban Homeowners</h3>
-              <p className="text-sm text-gray-400">Stopping high KPLC bills and unpredictable blackouts for families across the city.</p>
+              <h3 className="text-white font-bold text-lg">Urban & Rural Homeowners</h3>
+              <p className="text-sm text-gray-400">Stopping high KPLC bills and unpredictable blackouts for families in any location.</p>
             </div>
           </div>
 
@@ -31,8 +31,8 @@ export const SocialProof: React.FC = () => {
               <Zap size={24} />
             </div>
             <div>
-              <h3 className="text-white font-bold text-lg">Reliable Backup</h3>
-              <p className="text-sm text-gray-400">Keeping home offices and medical equipment running 24/7 without interruption.</p>
+              <h3 className="text-white font-bold text-lg">Nationwide Backup</h3>
+              <p className="text-sm text-gray-400">Keeping home offices and essential farm equipment running 24/7 without interruption.</p>
             </div>
           </div>
 
@@ -42,7 +42,7 @@ export const SocialProof: React.FC = () => {
             </div>
             <div>
               <h3 className="text-white font-bold text-lg">Property Appreciation</h3>
-              <p className="text-sm text-gray-400">Increasing resale value for homes in Lavington, Westlands, and Syokimau.</p>
+              <p className="text-sm text-gray-400">Increasing resale value for homes from Lamu to Kisumu and everywhere in between.</p>
             </div>
           </div>
 
@@ -51,27 +51,30 @@ export const SocialProof: React.FC = () => {
               <Sun size={24} />
             </div>
             <div>
-              <h3 className="text-white font-bold text-lg">100% Green Families</h3>
-              <p className="text-sm text-gray-400">Transitioning to clean, quiet energy that doesn't rely on noisy generators.</p>
+              <h3 className="text-white font-bold text-lg">Clean Energy for All</h3>
+              <p className="text-sm text-gray-400">Transitioning to clean, quiet energy that doesn't rely on noisy generators, no matter how remote.</p>
             </div>
           </div>
         </div>
 
         <div className="mt-16 flex flex-wrap justify-center gap-4 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
            <div className="flex items-center gap-2 text-white font-bold text-xs uppercase tracking-widest px-4 py-2 border border-white/10 rounded-full">
-             <MapPin size={14} className="text-gold" /> Westlands
+             <MapPin size={14} className="text-gold" /> Nairobi
            </div>
            <div className="flex items-center gap-2 text-white font-bold text-xs uppercase tracking-widest px-4 py-2 border border-white/10 rounded-full">
-             <MapPin size={14} className="text-gold" /> Karen
+             <MapPin size={14} className="text-gold" /> Mombasa
            </div>
            <div className="flex items-center gap-2 text-white font-bold text-xs uppercase tracking-widest px-4 py-2 border border-white/10 rounded-full">
-             <MapPin size={14} className="text-gold" /> Runda
+             <MapPin size={14} className="text-gold" /> Kisumu
            </div>
            <div className="flex items-center gap-2 text-white font-bold text-xs uppercase tracking-widest px-4 py-2 border border-white/10 rounded-full">
-             <MapPin size={14} className="text-gold" /> Kilimani
+             <MapPin size={14} className="text-gold" /> Nakuru
            </div>
            <div className="flex items-center gap-2 text-white font-bold text-xs uppercase tracking-widest px-4 py-2 border border-white/10 rounded-full">
-             <MapPin size={14} className="text-gold" /> Syokimau
+             <MapPin size={14} className="text-gold" /> Eldoret
+           </div>
+           <div className="flex items-center gap-2 text-white font-bold text-xs uppercase tracking-widest px-4 py-2 border border-white/10 rounded-full">
+             <MapPin size={14} className="text-gold" /> Rural Regions
            </div>
         </div>
       </div>

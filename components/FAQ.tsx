@@ -1,20 +1,23 @@
 
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion as motionImport, AnimatePresence } from 'framer-motion';
 import { Plus, Minus } from 'lucide-react';
+
+// Fix for framer-motion type mismatch in the current environment
+const motion = motionImport as any;
 
 const faqData = [
   {
     q: "Who are the best solar installers in Kenya?",
-    a: "While there are many options, the 'best' installers prioritize engineering quality over speed. Solar Gear focuses on Tier-1 components (Jinko, Longi, Victron) and expert load profiling to ensure your system doesn't just work, but thrives for 25+ years."
+    a: "While there are many options, the 'best' installers prioritize engineering quality over speed. Solar Gear focuses on Tier-1 components (Jinko, Longi, Victron) and expert load profiling to ensure your system doesn't just work, but thrives for 25+ years, anywhere in the country."
   },
   {
-    q: "Is the Solar Readiness Assessment in Nairobi really free?",
-    a: "Yes. Our founding member offer includes a comprehensive Solar Readiness Assessment (normally KES 5,000) for free across Nairobi. Our engineers will visit your property, analyze your roof, and review your bills with zero obligation."
+    q: "Is the Solar Readiness Assessment really free across Kenya?",
+    a: "Yes. Our founding member offer includes a comprehensive Solar Readiness Assessment (normally KES 5,000) for free across Kenya. Our engineers will visit your property, whether it's in a city hub or a remote rural area, with zero obligation."
   },
   {
-    q: "How does solar backup in Nairobi handle power blackouts?",
-    a: "Our hybrid solar systems switch to battery power (LiFePO4) in milliseconds when a blackout occurs. Most Nairobi homeowners won't even notice the lights flicker. We calculate your battery capacity during the assessment to ensure you have enough 'bridge' power."
+    q: "How does solar backup handle Kenyan power blackouts?",
+    a: "Our hybrid solar systems switch to battery power (LiFePO4) in milliseconds when a blackout occurs. Most Kenyan homeowners won't even notice the lights flicker. We calculate your battery capacity during the assessment to ensure you have enough 'bridge' power for your local grid conditions."
   },
   {
     q: "What is the ROI for solar panels in Kenya?",
@@ -22,7 +25,7 @@ const faqData = [
   },
   {
     q: "Do you install solar outside of Nairobi?",
-    a: "Primarily we focus on Nairobi and its environs (Kiambu, Machakos, Kajiado) to maintain our gold-standard support quality. However, for specialized projects, we do send our senior team across Kenya."
+    a: "Absolutely. We are a nationwide engineering firm. We serve all 47 counties, from the capital to rural highlands and coastal towns. Our logistics team is specialized in deploying high-end hardware to even the most remote Kenyan locations."
   }
 ];
 
@@ -30,7 +33,7 @@ export const FAQ: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   return (
-    <section className="py-32 bg-charcoal border-t border-white/5">
+    <section id="faq" className="py-32 bg-charcoal border-t border-white/5">
       <div className="container mx-auto px-6 max-w-3xl">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -38,7 +41,7 @@ export const FAQ: React.FC = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">Nairobi Solar Guide & FAQ</h2>
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">Kenya Solar Guide & FAQ</h2>
           <p className="text-gray-500">Everything you need to know about professional solar installers in Kenya.</p>
         </motion.div>
 
@@ -86,7 +89,7 @@ export const FAQ: React.FC = () => {
             href="https://wa.me/254722371250" 
             className="text-gold font-bold hover:underline underline-offset-4"
           >
-            Ask a Nairobi Solar Expert on WhatsApp →
+            Ask a Kenyan Solar Expert on WhatsApp →
           </a>
         </div>
       </div>

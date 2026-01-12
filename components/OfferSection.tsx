@@ -1,6 +1,10 @@
+
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion as motionImport } from 'framer-motion';
 import { Rocket, Zap, Brain, Shield } from 'lucide-react';
+
+// Fix for framer-motion type mismatch in the current environment
+const motion = motionImport as any;
 
 export const OfferSection: React.FC = () => {
   const perks = [
@@ -11,7 +15,7 @@ export const OfferSection: React.FC = () => {
   ];
 
   return (
-    <section className="py-32 bg-gradient-to-b from-[#111] to-charcoal relative">
+    <section id="how-it-works" className="py-32 bg-gradient-to-b from-[#111] to-charcoal relative">
       <div className="container mx-auto px-6">
         
         <motion.div 

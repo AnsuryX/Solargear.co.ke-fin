@@ -1,7 +1,10 @@
 
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion as motionImport } from 'framer-motion';
 import { Calculator, Sun, Battery, Zap, ArrowRight } from 'lucide-react';
+
+// Fix for framer-motion type mismatch in the current environment
+const motion = motionImport as any;
 
 export const CalculatorSection: React.FC = () => {
   const [bill, setBill] = useState<number>(15000);
@@ -30,7 +33,7 @@ export const CalculatorSection: React.FC = () => {
   };
 
   return (
-    <section className="py-24 bg-[#111] relative overflow-hidden">
+    <section id="calculator" className="py-24 bg-[#111] relative overflow-hidden">
       {/* Background Decor */}
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent"></div>
       

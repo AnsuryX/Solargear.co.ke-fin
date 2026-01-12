@@ -1,8 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion as motionImport, AnimatePresence } from 'framer-motion';
 import { Star, Quote, ChevronLeft, ChevronRight, MapPin, Zap } from 'lucide-react';
 import { Testimonial } from '../types';
+
+// Fix for framer-motion type mismatch in the current environment
+const motion = motionImport as any;
 
 const testimonials: Testimonial[] = [
   {

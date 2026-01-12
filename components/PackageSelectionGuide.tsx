@@ -1,7 +1,10 @@
 
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion as motionImport, AnimatePresence } from 'framer-motion';
 import { Check, ArrowRight, Zap, Shield, Sparkles, HelpCircle, Star, X } from 'lucide-react';
+
+// Fix for framer-motion type mismatch in the current environment
+const motion = motionImport as any;
 
 const comparisonData = [
   {

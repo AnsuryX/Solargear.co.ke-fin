@@ -1,10 +1,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { ArrowRight, MessageCircle, Star, ShieldCheck, Zap, Globe } from 'lucide-react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion as motionImport, useScroll, useTransform } from 'framer-motion';
 import { SplineScene } from "./ui/spline";
 import { Card } from "./ui/card";
 import { Spotlight } from "./ui/spotlight";
+
+// Fix for framer-motion type mismatch in the current environment
+const motion = motionImport as any;
 
 interface HeroProps {
   onChatClick: () => void;
@@ -75,7 +78,7 @@ export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
             <div className="flex items-center gap-3 mb-8">
               <div className="h-[1px] w-12 bg-gold/50"></div>
               <span className="text-gold text-[10px] md:text-xs font-black uppercase tracking-[0.4em]">
-                Exclusively Residential • Nairobi
+                Residential Specialists • Serving All 47 Counties
               </span>
             </div>
 
@@ -91,18 +94,18 @@ export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
             <div className="flex flex-col md:flex-row gap-8 items-start mb-12">
               <div className="max-w-md">
                 <p className="text-xl md:text-2xl text-white/90 font-medium mb-4 leading-tight">
-                  Premium Solar Engineering for <span className="text-gold italic">Nairobi's Finest Homes.</span>
+                  Premium Solar Engineering for <span className="text-gold italic">Kenya’s Finest Homes.</span>
                 </p>
                 <p className="text-gray-400 font-light leading-relaxed">
-                  We don't just install panels; we design energy independence. Stop KPLC reliance today with Kenya's most trusted residential specialists.
+                  From the capital city to rural retreats, we design energy independence. Stop KPLC reliance today with Kenya's most trusted residential solar partner.
                 </p>
               </div>
 
               {/* Quick Stats Grid */}
               <div className="grid grid-cols-2 gap-4 w-full md:w-auto">
                 <div className="p-4 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-sm">
-                  <div className="text-gold font-black text-2xl">200+</div>
-                  <div className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Homes Powered</div>
+                  <div className="text-gold font-black text-2xl">47</div>
+                  <div className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Counties Served</div>
                 </div>
                 <div className="p-4 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-sm">
                   <div className="text-gold font-black text-2xl">0%</div>
@@ -141,7 +144,7 @@ export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
       <div className="absolute top-1/4 right-20 space-y-4 z-10 pointer-events-none hidden xl:block">
         <FloatingBadge icon={<ShieldCheck size={18} />} text="Tier 1 Tech Only" delay={1.2} />
         <FloatingBadge icon={<Zap size={18} />} text="Instant Switching" delay={1.4} />
-        <FloatingBadge icon={<Globe size={18} />} text="Nairobi Wide Support" delay={1.6} />
+        <FloatingBadge icon={<Globe size={18} />} text="Nationwide Support" delay={1.6} />
       </div>
 
       {/* Trust Pilot Style Ribbon */}
@@ -154,7 +157,7 @@ export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
         <div className="flex gap-1">
           {[...Array(5)].map((_, i) => <Star key={i} size={10} className="fill-gold text-gold" />)}
         </div>
-        5.0 Average Customer Rating
+        5.0 Average Customer Rating Across Kenya
       </motion.div>
 
       {/* Scroll Indicator */}

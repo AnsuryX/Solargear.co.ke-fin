@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { HelpCircle, DollarSign, ShieldAlert, Frown } from 'lucide-react';
@@ -13,7 +14,7 @@ const data = [
 
 export const ProblemSection: React.FC = () => {
   return (
-    <section className="py-20 bg-charcoal">
+    <section id="why-us" className="py-20 bg-charcoal">
       <div className="container mx-auto px-6">
         <div className="flex flex-col lg:flex-row gap-16 items-center">
           

@@ -1,7 +1,10 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion as motionImport } from 'framer-motion';
 import { Check, Zap, Home, ShieldCheck, ArrowRight, Star } from 'lucide-react';
+
+// Fix for framer-motion type mismatch in the current environment
+const motion = motionImport as any;
 
 interface PackagesSectionProps {
   onPackageSelect: (name: string) => void;

@@ -1,7 +1,10 @@
 
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion as motionImport, AnimatePresence } from 'framer-motion';
 import { X, MessageCircle, User, Phone, CheckCircle2, Loader2, ArrowRight } from 'lucide-react';
+
+// Fix for framer-motion type mismatch in the current environment
+const motion = motionImport as any;
 
 interface PackagePurchaseModalProps {
   isOpen: boolean;
