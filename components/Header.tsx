@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Logo } from './Logo';
 import { Phone, ArrowRight } from 'lucide-react';
+import { trackEvent } from '../lib/analytics';
 
 export const Header: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -14,8 +15,14 @@ export const Header: React.FC = () => {
   }, []);
 
   const scrollToSection = (id: string) => {
+    trackEvent('nav_click', { section_id: id });
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleAssessmentClick = () => {
+    trackEvent('cta_click', { button_name: 'get_free_assessment', location: 'header' });
+    scrollToSection('reserve');
   };
 
   return (
@@ -44,13 +51,17 @@ export const Header: React.FC = () => {
         </nav>
 
         <div className="flex items-center gap-6">
-          <a href="tel:+254722371250" className="hidden md:flex items-center gap-2 text-white hover:text-gold transition-colors">
+          <a 
+            href="tel:+254722371250" 
+            onClick={() => trackEvent('phone_click', { location: 'header' })}
+            className="hidden md:flex items-center gap-2 text-white hover:text-gold transition-colors"
+          >
             <Phone size={16} className="text-gold" />
             <span className="text-xs font-bold">+254 722 371 250</span>
           </a>
           
           <button
-            onClick={() => scrollToSection('reserve')}
+            onClick={handleAssessmentClick}
             className={`px-6 py-3 rounded-full font-black text-[10px] uppercase tracking-widest transition-all ${
               scrolled ? 'bg-gold text-charcoal hover:bg-gold-light' : 'bg-white/10 text-white hover:bg-white/20'
             }`}

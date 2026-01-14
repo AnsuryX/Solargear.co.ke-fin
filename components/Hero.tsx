@@ -5,6 +5,7 @@ import { motion as motionImport, useScroll, useTransform } from 'framer-motion';
 import { SplineScene } from "./ui/spline";
 import { Card } from "./ui/card";
 import { Spotlight } from "./ui/spotlight";
+import { trackEvent } from '../lib/analytics';
 
 // Fix for framer-motion type mismatch in the current environment
 const motion = motionImport as any;
@@ -40,6 +41,16 @@ export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
     window.addEventListener('resize', checkScreenSize);
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
+
+  const handleExploreClick = () => {
+    trackEvent('cta_click', { button_name: 'explore_packages', location: 'hero' });
+    onProductClick();
+  };
+
+  const handleChatClick = () => {
+    trackEvent('cta_click', { button_name: 'chat_with_engineer', location: 'hero' });
+    onChatClick();
+  };
 
   return (
     <section className="relative min-h-screen w-full bg-charcoal flex items-center overflow-hidden">
@@ -119,7 +130,7 @@ export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
               <motion.button 
                 whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(212, 175, 55, 0.3)" }}
                 whileTap={{ scale: 0.95 }}
-                onClick={onProductClick}
+                onClick={handleExploreClick}
                 className="relative group overflow-hidden bg-gold text-charcoal font-black py-5 px-12 rounded-sm transition-all duration-500 flex items-center justify-center gap-3"
               >
                 <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
@@ -129,7 +140,7 @@ export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
               
               <motion.button 
                 whileHover={{ backgroundColor: "rgba(255, 255, 255, 0.1)" }}
-                onClick={onChatClick}
+                onClick={handleChatClick}
                 className="bg-transparent border-2 border-white/20 hover:border-gold/50 text-white py-5 px-12 rounded-sm font-bold transition-all flex items-center justify-center gap-3 group"
               >
                 <MessageCircle size={20} className="group-hover:text-gold transition-colors" />

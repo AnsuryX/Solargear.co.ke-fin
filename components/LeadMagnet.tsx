@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { motion as motionImport, AnimatePresence } from 'framer-motion';
 import { Send, Loader2, CheckCircle2, MessageCircle, AlertCircle, TrendingUp } from 'lucide-react';
+import { trackLeadSubmission, trackWhatsAppClick } from '../lib/analytics';
 
 // Fix for framer-motion type mismatch in the current environment
 const motion = motionImport as any;
@@ -28,6 +29,7 @@ export const LeadMagnet: React.FC = () => {
 
       if (response.ok) {
         setStatus('success');
+        trackLeadSubmission('form'); // TRACKING: Main Form Lead
         setFormData({ name: '', phone: '' });
       } else {
         const errorData = await response.json();
@@ -38,6 +40,10 @@ export const LeadMagnet: React.FC = () => {
       console.error("Submission error:", error);
       setStatus('error');
     }
+  };
+
+  const handleWhatsAppClick = () => {
+    trackWhatsAppClick('lead_form'); // TRACKING: WhatsApp from Lead Section
   };
 
   return (
@@ -184,6 +190,7 @@ export const LeadMagnet: React.FC = () => {
                       href="https://wa.me/254722371250?text=Hi%2C%20I'm%20interested%20in%20the%20Free%20Solar%20Readiness%20Assessment%20worth%20KES%205000."
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={handleWhatsAppClick}
                       className="bg-[#25D366] hover:bg-[#1ebc57] text-white font-bold text-lg py-5 rounded-xl transition-all flex items-center justify-center gap-3"
                     >
                       <MessageCircle size={22} />

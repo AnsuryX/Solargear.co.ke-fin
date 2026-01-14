@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { X, Send, Bot, User, Loader2, Database, MessageCircle, Calendar, ExternalLink } from 'lucide-react';
 import { sendMessageToGemini } from '../services/geminiService';
 import { ChatMessage } from '../types';
+import { trackLeadSubmission, trackWhatsAppClick, trackEvent } from '../lib/analytics';
 
 interface ChatModalProps {
   isOpen: boolean;
@@ -41,6 +42,11 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
       const isSystemError = responseText.includes("temporary connection issue") || responseText.includes("WhatsApp option");
       const isBookingReady = responseText.includes("calendly.com") || responseText.includes("book your slot");
       
+      // Check if lead was just submitted in the service layer
+      if (responseText.toLowerCase().includes("notified our engineering") || responseText.toLowerCase().includes("details received")) {
+        trackLeadSubmission('chat'); // TRACKING: Chat captured a lead
+      }
+
       setMessages(prev => [...prev, { 
         role: 'model', 
         text: responseText, 
@@ -63,6 +69,14 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
       e.preventDefault();
       handleSend();
     }
+  };
+
+  const handleCalendlyClick = () => {
+    trackEvent('calendly_click', { source: 'chat_modal' });
+  };
+
+  const handleWhatsAppFallbackClick = () => {
+    trackWhatsAppClick('chat_modal');
   };
 
   if (!isOpen) return null;
@@ -110,6 +124,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
                       href={CALENDLY_URL}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={handleCalendlyClick}
                       className="flex items-center justify-center gap-2 bg-gold text-charcoal py-3 px-4 rounded-lg font-black text-xs hover:bg-gold-light transition-all shadow-lg shadow-gold/20"
                     >
                       <Calendar size={14} /> Book Free 30-min Assessment <ExternalLink size={12} />
@@ -119,6 +134,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
                         href="https://wa.me/254722371250?text=Hi%2C%20I'm%20having%20trouble%20with%20the%20AI%20chat%20but%20want%20to%20book%20my%20solar%20assessment."
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={handleWhatsAppFallbackClick}
                         className="flex items-center justify-center gap-2 bg-[#25D366] text-white py-2 px-4 rounded-lg font-bold text-xs hover:bg-[#1ebc57] transition-colors"
                       >
                         <MessageCircle size={14} /> Talk on WhatsApp

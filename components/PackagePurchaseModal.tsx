@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { motion as motionImport, AnimatePresence } from 'framer-motion';
 import { X, MessageCircle, User, Phone, CheckCircle2, Loader2, ArrowRight } from 'lucide-react';
+import { trackLeadSubmission, trackWhatsAppClick } from '../lib/analytics';
 
 // Fix for framer-motion type mismatch in the current environment
 const motion = motionImport as any;
@@ -40,6 +41,9 @@ export const PackagePurchaseModal: React.FC<PackagePurchaseModalProps> = ({ isOp
       console.error("Tracking failed, proceeding to WhatsApp anyway.");
     }
 
+    // TRACKING: Lead form part of package purchase
+    trackLeadSubmission('form', packageName);
+
     // 2. Set success state
     setStatus('success');
 
@@ -51,6 +55,7 @@ export const PackagePurchaseModal: React.FC<PackagePurchaseModalProps> = ({ isOp
 
     // 4. Redirect after a short delay to show success
     setTimeout(() => {
+      trackWhatsAppClick('package_modal', packageName); // TRACKING: Final conversion to WhatsApp
       window.open(whatsappUrl, '_blank');
       onClose();
       setStatus('idle');
