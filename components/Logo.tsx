@@ -9,7 +9,7 @@ interface LogoProps {
 
 export const Logo: React.FC<LogoProps> = ({ className = "", variant = 'full', size = 40 }) => {
   return (
-    <div className={`flex items-center gap-3 ${className}`}>
+    <div className={`flex items-center gap-3 ${className}`} role="img" aria-label="Solar Gear Ltd Logo">
       {/* The SG Nexus Symbol */}
       <svg 
         width={size} 
@@ -19,6 +19,7 @@ export const Logo: React.FC<LogoProps> = ({ className = "", variant = 'full', si
         xmlns="http://www.w3.org/2000/svg"
         className="shrink-0"
       >
+        <title>Solar Gear Icon</title>
         <circle cx="50" cy="50" r="48" stroke="url(#logo-grad)" strokeWidth="1" strokeDasharray="4 2" opacity="0.3" />
         <path 
           d="M30 35C30 35 45 20 70 30C95 40 70 70 50 70C30 70 10 50 30 35Z" 
