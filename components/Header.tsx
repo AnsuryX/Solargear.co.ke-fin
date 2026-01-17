@@ -5,24 +5,51 @@ import { Logo } from './Logo';
 import { Phone, ArrowRight } from 'lucide-react';
 import { trackEvent } from '../lib/analytics';
 
-export const Header: React.FC = () => {
+interface HeaderProps {
+  onLogoClick?: () => void;
+}
+
+export const Header: React.FC<HeaderProps> = ({ onLogoClick }) => {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleHashChange);
   }, []);
 
+  const handleHashChange = () => {
+    // Check if we need to update scroll state on hash change
+    setScrolled(window.scrollY > 50);
+  };
+
   const scrollToSection = (id: string) => {
-    trackEvent('nav_click', { section_id: id });
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    // If not on home page, navigate home first
+    if (window.location.hash === '#privacy') {
+      if (onLogoClick) onLogoClick();
+      // Small delay to allow home page to render
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else {
+      trackEvent('nav_click', { section_id: id });
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   const handleAssessmentClick = () => {
     trackEvent('cta_click', { button_name: 'get_free_assessment', location: 'header' });
     scrollToSection('reserve');
+  };
+
+  const handleLogoClick = () => {
+    if (onLogoClick) {
+      onLogoClick();
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   return (
@@ -34,7 +61,7 @@ export const Header: React.FC = () => {
       }`}
     >
       <div className="container mx-auto px-6 flex justify-between items-center">
-        <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+        <button onClick={handleLogoClick} className="transition-transform active:scale-95">
           <Logo size={scrolled ? 32 : 40} />
         </button>
 

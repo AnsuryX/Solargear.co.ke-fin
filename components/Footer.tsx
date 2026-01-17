@@ -3,7 +3,11 @@ import React from 'react';
 import { Phone, MapPin, Mail, ChevronRight, Globe, ShieldCheck } from 'lucide-react';
 import { Logo } from './Logo';
 
-export const Footer: React.FC = () => {
+interface FooterProps {
+  onPrivacyClick?: () => void;
+}
+
+export const Footer: React.FC<FooterProps> = ({ onPrivacyClick }) => {
   const currentYear = new Date().getFullYear();
 
   const handleScroll = (id: string) => {
@@ -124,7 +128,12 @@ export const Footer: React.FC = () => {
           </div>
           
           <div className="flex gap-8 text-[10px] font-bold text-gray-500 uppercase tracking-widest">
-            <a href="#" className="hover:text-gold transition-colors">Privacy</a>
+            <button 
+              onClick={onPrivacyClick}
+              className="hover:text-gold transition-colors"
+            >
+              Privacy
+            </button>
             <a href="#" className="hover:text-gold transition-colors">Nationwide Engineering Standards</a>
             <a href="#" className="hover:text-gold transition-colors">Terms</a>
           </div>
