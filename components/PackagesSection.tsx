@@ -1,13 +1,15 @@
 
 import React from 'react';
 import { motion as motionImport } from 'framer-motion';
-import { Check, Zap, Home, ShieldCheck, ArrowRight, Star } from 'lucide-react';
+import { Check, Zap, Home, ShieldCheck, ArrowRight, Star, MessageSquare } from 'lucide-react';
+import { trackEvent } from '../lib/analytics';
 
 // Fix for framer-motion type mismatch in the current environment
 const motion = motionImport as any;
 
 interface PackagesSectionProps {
   onPackageSelect: (name: string) => void;
+  onChatWithPackage: (packageName: string) => void;
 }
 
 const packages = [
@@ -58,7 +60,12 @@ const packages = [
   }
 ];
 
-export const PackagesSection: React.FC<PackagesSectionProps> = ({ onPackageSelect }) => {
+export const PackagesSection: React.FC<PackagesSectionProps> = ({ onPackageSelect, onChatWithPackage }) => {
+  const handleChatClick = (name: string) => {
+    trackEvent('cta_click', { button_name: 'ask_expert_package', package: name });
+    onChatWithPackage(name);
+  };
+
   return (
     <section id="packages" className="py-24 bg-[#0A0A0A] relative overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
@@ -118,17 +125,27 @@ export const PackagesSection: React.FC<PackagesSectionProps> = ({ onPackageSelec
                 ))}
               </ul>
 
-              <button 
-                onClick={() => onPackageSelect(pkg.name)}
-                className={`w-full py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all flex items-center justify-center gap-2 group ${
-                  pkg.highlight 
-                    ? 'bg-gold text-charcoal hover:bg-gold-light' 
-                    : 'bg-white/5 text-white border border-white/10 hover:bg-white/10'
-                }`}
-              >
-                {pkg.cta}
-                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-              </button>
+              <div className="flex flex-col gap-3">
+                <button 
+                  onClick={() => onPackageSelect(pkg.name)}
+                  className={`w-full py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all flex items-center justify-center gap-2 group ${
+                    pkg.highlight 
+                      ? 'bg-gold text-charcoal hover:bg-gold-light' 
+                      : 'bg-white/5 text-white border border-white/10 hover:bg-white/10'
+                  }`}
+                >
+                  {pkg.cta}
+                  <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                </button>
+
+                <button 
+                  onClick={() => handleChatClick(pkg.name)}
+                  className="w-full py-3 rounded-xl font-bold text-[10px] uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 border border-white/5 text-gray-400 hover:text-gold hover:border-gold/30 bg-white/0 hover:bg-gold/5"
+                >
+                  <MessageSquare size={14} />
+                  Ask about this package
+                </button>
+              </div>
             </motion.div>
           ))}
         </div>

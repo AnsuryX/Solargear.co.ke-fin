@@ -8,18 +8,20 @@ import { trackLeadSubmission, trackWhatsAppClick, trackEvent } from '../lib/anal
 interface ChatModalProps {
   isOpen: boolean;
   onClose: () => void;
+  prefillMessage?: string | null;
 }
 
 const CALENDLY_URL = "https://calendly.com/solargearlrd/30min";
 const WHATSAPP_FALLBACK = "I'm having a temporary connection issue. Please try again in a moment or use the WhatsApp option to connect directly with our engineers.";
 
-export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
+export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, prefillMessage }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([
     { role: 'model', text: 'Hi 👋 Welcome to Solar Gear. Are you looking for a solar solution for your Home, Business, or an Apartment here in Nairobi? 😊' }
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const hasPrefilled = useRef(false);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -29,22 +31,36 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
     scrollToBottom();
   }, [messages, isOpen]);
 
-  const handleSend = async () => {
-    if (!inputValue.trim() || isLoading) return;
+  // Handle Prefill Logic
+  useEffect(() => {
+    if (isOpen && prefillMessage && !hasPrefilled.current) {
+      hasPrefilled.current = true;
+      handleSend(prefillMessage);
+    }
+    
+    // Reset prefill tracking when closing
+    if (!isOpen) {
+      hasPrefilled.current = false;
+      // Optionally reset chat history on close if you want fresh sessions
+      // setMessages([{ role: 'model', text: 'Hi 👋 ...' }]);
+    }
+  }, [isOpen, prefillMessage]);
 
-    const userText = inputValue;
-    setInputValue('');
-    setMessages(prev => [...prev, { role: 'user', text: userText }]);
+  const handleSend = async (textToOverride?: string) => {
+    const textToSend = textToOverride || inputValue;
+    if (!textToSend.trim() || isLoading) return;
+
+    if (!textToOverride) setInputValue('');
+    setMessages(prev => [...prev, { role: 'user', text: textToSend }]);
     setIsLoading(true);
 
     try {
-      const responseText = await sendMessageToGemini(userText);
+      const responseText = await sendMessageToGemini(textToSend);
       const isSystemError = responseText.includes("temporary connection issue") || responseText.includes("WhatsApp option");
       const isBookingReady = responseText.includes("calendly.com") || responseText.includes("book your slot");
       
-      // Check if lead was just submitted in the service layer
       if (responseText.toLowerCase().includes("notified our engineering") || responseText.toLowerCase().includes("details received")) {
-        trackLeadSubmission('chat'); // TRACKING: Chat captured a lead
+        trackLeadSubmission('chat'); 
       }
 
       setMessages(prev => [...prev, { 
@@ -82,7 +98,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
       <div className="bg-[#1A1A1A] w-full max-w-lg rounded-xl border border-white/10 shadow-2xl flex flex-col h-[600px] overflow-hidden">
         {/* Header */}
         <div className="p-4 border-b border-white/10 flex justify-between items-center bg-[#222]">
@@ -175,7 +191,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
               autoFocus
             />
             <button 
-              onClick={handleSend}
+              onClick={() => handleSend()}
               disabled={isLoading || !inputValue.trim()}
               className="bg-gold hover:bg-gold-light text-charcoal p-4 rounded-xl disabled:opacity-50 transition-colors shadow-lg shadow-gold/10"
             >

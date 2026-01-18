@@ -21,6 +21,7 @@ import { PrivacyPolicy } from './components/PrivacyPolicy';
 function App() {
   const [currentPage, setCurrentPage] = useState<'home' | 'privacy'>('home');
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [prefillChatMessage, setPrefillChatMessage] = useState<string | null>(null);
   const [purchaseModal, setPurchaseModal] = useState<{ isOpen: boolean; packageName: string }>({
     isOpen: false,
     packageName: ''
@@ -46,6 +47,16 @@ function App() {
 
   const handlePackageSelect = (name: string) => {
     setPurchaseModal({ isOpen: true, packageName: name });
+  };
+
+  const handleChatWithPackage = (packageName: string) => {
+    setPrefillChatMessage(`I'm interested in the ${packageName}. Could you explain the technical specs and how it handles blackouts?`);
+    setIsChatOpen(true);
+  };
+
+  const closeChat = () => {
+    setIsChatOpen(false);
+    setPrefillChatMessage(null);
   };
 
   const navigateToHome = () => {
@@ -86,7 +97,10 @@ function App() {
 
       <PackageSelectionGuide />
 
-      <PackagesSection onPackageSelect={handlePackageSelect} />
+      <PackagesSection 
+        onPackageSelect={handlePackageSelect} 
+        onChatWithPackage={handleChatWithPackage}
+      />
       
       <ProductSpotlight />
       
@@ -106,7 +120,8 @@ function App() {
 
       <ChatModal 
         isOpen={isChatOpen} 
-        onClose={() => setIsChatOpen(false)} 
+        prefillMessage={prefillChatMessage}
+        onClose={closeChat} 
       />
 
       <PackagePurchaseModal 
