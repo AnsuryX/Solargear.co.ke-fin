@@ -21,6 +21,27 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       outDir: 'dist',
+      sourcemap: false,
+      minify: 'esbuild',
+      rollupOptions: {
+        output: {
+          manualChunks: (id) => {
+            if (id.includes('node_modules')) {
+              if (id.includes('react-dom') || id.includes('react/')) return 'react-vendor';
+              if (id.includes('framer-motion')) return 'framer-motion';
+              if (id.includes('recharts')) return 'recharts';
+              if (id.includes('splinetool') || id.includes('@splinetool')) return 'spline';
+              if (id.includes('@google/genai')) return 'genai';
+              if (id.includes('lucide-react')) return 'lucide';
+              return 'vendor';
+            }
+          },
+          chunkFileNames: 'assets/[name]-[hash].js',
+          entryFileNames: 'assets/[name]-[hash].js',
+          assetFileNames: 'assets/[name]-[hash][extname]',
+        },
+      },
+      chunkSizeWarningLimit: 500,
     }
   };
 });
