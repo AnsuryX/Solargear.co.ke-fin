@@ -9,6 +9,9 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   
   return {
+    // Use relative asset paths so deployments under subpaths still work
+    // (prevents /assets/* 404s that leave the app stuck on the spinner)
+    base: './',
     plugins: [react()],
     define: {
       // Strictly satisfying the @google/genai requirement for process.env.API_KEY
@@ -23,16 +26,19 @@ export default defineConfig(({ mode }) => {
       outDir: 'dist',
       sourcemap: false,
       minify: 'esbuild',
+      // Avoid preloading huge lazy chunks (e.g. Spline) on initial HTML load.
+      modulePreload: {
+        resolveDependencies: (_filename, deps) =>
+          deps.filter((d) => !d.includes('spline-') && !d.includes('recharts-') && !d.includes('genai-')),
+      },
       rollupOptions: {
         output: {
           manualChunks: (id) => {
             if (id.includes('node_modules')) {
-              if (id.includes('react-dom') || id.includes('react/')) return 'react-vendor';
               if (id.includes('framer-motion')) return 'framer-motion';
               if (id.includes('recharts')) return 'recharts';
               if (id.includes('splinetool') || id.includes('@splinetool')) return 'spline';
               if (id.includes('@google/genai')) return 'genai';
-              if (id.includes('lucide-react')) return 'lucide';
               return 'vendor';
             }
           },
