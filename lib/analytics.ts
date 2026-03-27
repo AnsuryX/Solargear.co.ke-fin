@@ -1,7 +1,7 @@
 
 /**
- * Utility for tracking conversions and user interactions for Google Ads / GA4 via GTM.
- * Now includes A/B testing logic to track variant performance.
+ * Utility for tracking conversions and user interactions.
+ * Events are pushed to the dataLayer for tag management systems (e.g., Cloudflare Zaraz).
  */
 
 type ConversionSource = 'hero' | 'header' | 'footer' | 'package_modal' | 'chat_modal' | 'lead_form' | 'faq';
@@ -27,12 +27,15 @@ export const getABVariant = (): ABVariant => {
 };
 
 export const trackEvent = (eventName: string, params: Record<string, any> = {}) => {
-  if (typeof window !== 'undefined' && (window as any).dataLayer) {
+  if (typeof window !== 'undefined') {
+    // Ensure dataLayer exists
+    (window as any).dataLayer = (window as any).dataLayer || [];
+    
     const variant = getABVariant();
     (window as any).dataLayer.push({
       event: eventName,
       ...params,
-      ab_test_variant: variant, // Injected for all events
+      ab_test_variant: variant,
       timestamp: new Date().toISOString(),
     });
   }
