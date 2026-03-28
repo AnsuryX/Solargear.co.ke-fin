@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion as motionImport } from 'framer-motion';
-import { Rocket, Zap, Brain, Shield, Lock, CheckCircle, Timer, Globe } from 'lucide-react';
+import { Rocket, Zap, Brain, Shield, Lock, CheckCircle, Timer, Globe, MessageSquare } from 'lucide-react';
 
 // Fix for framer-motion type mismatch in the current environment
 const motion = motionImport as any;
@@ -84,7 +84,7 @@ export const OfferSection: React.FC = () => {
           
           {/* ROI Proof Line */}
           <div className="mt-20 pt-10 border-t border-charcoal/5 dark:border-white/5 text-center">
-            <div className="flex flex-wrap justify-center gap-8 items-center opacity-60">
+            <div className="flex flex-wrap justify-center gap-8 items-center opacity-60 mb-12">
               <div className="flex items-center gap-2 text-charcoal dark:text-white font-bold text-xs uppercase tracking-widest">
                 <CheckCircle size={14} className="text-gold" /> Payback in 48 Months
               </div>
@@ -95,6 +95,14 @@ export const OfferSection: React.FC = () => {
                 <CheckCircle size={14} className="text-gold" /> 25-Year Panel Warranty
               </div>
             </div>
+
+            <button 
+              onClick={() => window.open('https://wa.me/254722371250', '_blank')}
+              className="bg-gold text-charcoal font-black py-5 px-12 rounded-sm transition-all flex items-center justify-center gap-3 shadow-xl shadow-gold/10 active:scale-95 mx-auto uppercase tracking-widest text-sm"
+            >
+              <MessageSquare size={20} />
+              Get Free Quote on WhatsApp
+            </button>
           </div>
         </motion.div>
 

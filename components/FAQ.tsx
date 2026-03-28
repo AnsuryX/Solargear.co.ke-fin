@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { motion as motionImport, AnimatePresence } from 'framer-motion';
 // Fixed: Added ArrowRight to imports to resolve line 105 error
-import { Plus, Minus, HelpCircle, ArrowRight } from 'lucide-react';
+import { Plus, Minus, HelpCircle, ArrowRight, MessageCircle } from 'lucide-react';
 
 // Fix for framer-motion type mismatch in the current environment
 const motion = motionImport as any;
@@ -103,7 +103,7 @@ export const FAQ: React.FC = () => {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 bg-gold text-charcoal px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-gold-light hover:scale-105 active:scale-95 transition-all shadow-xl shadow-gold/10"
           >
-            Ask a Kenyan Solar Expert <ArrowRight size={18} />
+            <MessageCircle size={18} /> Get Free Quote on WhatsApp
           </a>
         </div>
       </div>

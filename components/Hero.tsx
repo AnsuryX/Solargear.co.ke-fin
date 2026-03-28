@@ -45,27 +45,25 @@ export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
       ? 'From the capital city to rural retreats, we design energy independence. Stop KPLC reliance today with Kenya\'s most trusted residential solar partner.'
       : 'Experience true energy independence. Our high-performance solar systems ensure your home stays powered 24/7, no matter the grid status.',
     ctaLabels: {
-      primary: variant === 'A' ? 'EXPLORE PACKAGES' : 'SEE SOLAR PRICES',
-      secondary: variant === 'A' ? 'CHAT WITH ENGINEER' : 'GET EXPERT ADVICE'
+      primary: 'Get Quote on WhatsApp',
+      secondary: 'Order via M-Pesa'
     }
   };
 
-  const handleExploreClick = () => {
+  const handleWhatsAppClick = () => {
     trackEvent('cta_click', { 
-      button_name: 'explore_packages', 
-      location: 'hero',
-      label_used: copy.ctaLabels.primary 
-    });
-    onProductClick();
-  };
-
-  const handleChatClick = () => {
-    trackEvent('cta_click', { 
-      button_name: 'chat_with_engineer', 
-      location: 'hero',
-      label_used: copy.ctaLabels.secondary
+      button_name: 'whatsapp_quote', 
+      location: 'hero'
     });
     onChatClick();
+  };
+
+  const handleMpesaClick = () => {
+    trackEvent('cta_click', { 
+      button_name: 'mpesa_order', 
+      location: 'hero'
+    });
+    onProductClick();
   };
 
   return (
@@ -169,18 +167,18 @@ export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
             {/* Dynamic Buttons with A/B Testing Labels */}
             <div className="flex flex-col sm:flex-row gap-6">
               <button 
-                onClick={handleExploreClick}
+                onClick={handleWhatsAppClick}
                 className="relative group bg-gold text-charcoal font-black py-5 px-12 rounded-sm transition-all flex items-center justify-center gap-3 shadow-xl shadow-gold/10 active:scale-95"
               >
+                <MessageCircle size={20} />
                 {copy.ctaLabels.primary}
-                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </button>
               
               <button 
-                onClick={handleChatClick}
+                onClick={handleMpesaClick}
                 className="bg-transparent border-2 border-charcoal/20 dark:border-white/20 text-charcoal dark:text-white py-5 px-12 rounded-sm font-bold transition-all flex items-center justify-center gap-3 group active:scale-95"
               >
-                <MessageCircle size={20} className="group-hover:text-gold transition-colors" />
+                <Globe size={20} className="group-hover:text-gold transition-colors" />
                 {copy.ctaLabels.secondary}
               </button>
             </div>

@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { motion as motionImport, AnimatePresence } from 'framer-motion';
-import { X, MessageCircle, User, Phone, CheckCircle2, Loader2, ArrowRight } from 'lucide-react';
+import { X, MessageCircle, User, Phone, CheckCircle2, Loader2, ArrowRight, Globe } from 'lucide-react';
 import { trackLeadSubmission, trackWhatsAppClick } from '../lib/analytics';
 
 // Fix for framer-motion type mismatch in the current environment
@@ -154,6 +154,35 @@ export const PackagePurchaseModal: React.FC<PackagePurchaseModalProps> = ({ isOp
                       </>
                     )}
                   </button>
+
+                  <div className="relative py-4">
+                    <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-white/10"></div></div>
+                    <div className="relative flex justify-center text-[10px] uppercase font-black tracking-widest"><span className="bg-charcoal px-4 text-gray-500">OR PAY DIRECTLY</span></div>
+                  </div>
+
+                  <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center text-green-500">
+                        <Globe size={20} />
+                      </div>
+                      <div>
+                        <p className="text-[10px] text-gray-500 uppercase font-black tracking-widest">M-Pesa Paybill</p>
+                        <p className="text-xl font-black text-white">400222</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-gold/20 rounded-full flex items-center justify-center text-gold">
+                        <CheckCircle2 size={20} />
+                      </div>
+                      <div>
+                        <p className="text-[10px] text-gray-500 uppercase font-black tracking-widest">Account Name</p>
+                        <p className="text-xl font-black text-white">SOLARGEAR</p>
+                      </div>
+                    </div>
+                    <p className="text-[10px] text-gray-500 font-bold leading-tight">
+                      *Please send us the confirmation code on WhatsApp after making the payment to finalize your order.
+                    </p>
+                  </div>
                 </form>
 
                 <p className="text-[10px] text-center text-gray-600 font-bold uppercase tracking-widest">

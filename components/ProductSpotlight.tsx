@@ -14,7 +14,7 @@ export const ProductSpotlight: React.FC = () => {
           <p className="text-gray-400">Real value. No cheap shortcuts.</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           {/* Card 1 */}
           <div className="glass-panel p-6 rounded-lg hover:border-gold/50 transition-colors duration-300 group">
             <div className="h-14 w-14 bg-blue-500/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-blue-500/20 transition-colors">
@@ -58,6 +58,16 @@ export const ProductSpotlight: React.FC = () => {
               We don’t disappear after installation. You get guidance, check-ins, and support.
             </p>
           </div>
+        </div>
+
+        <div className="text-center">
+          <button 
+            onClick={() => window.open('https://wa.me/254722371250', '_blank')}
+            className="bg-gold text-charcoal font-black py-5 px-12 rounded-sm transition-all flex items-center justify-center gap-3 shadow-xl shadow-gold/10 active:scale-95 mx-auto uppercase tracking-widest text-sm"
+          >
+            <ShieldCheck size={20} />
+            Get Free Quote on WhatsApp
+          </button>
         </div>
       </div>
     </section>

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion as motionImport } from 'framer-motion';
-import { Check, Zap, Home, ShieldCheck, ArrowRight, MessageSquare, Plus } from 'lucide-react';
+import { Check, Zap, Home, ShieldCheck, ArrowRight, MessageSquare, Plus, Globe } from 'lucide-react';
 import { trackEvent } from '../lib/analytics';
 
 // Fix for framer-motion type mismatch in the current environment
@@ -30,7 +30,7 @@ const packages = [
       "Mobile Monitoring App",
       "Founding Member Status"
     ],
-    cta: "Request Estimate",
+    cta: "Get Quote on WhatsApp",
     highlight: false
   },
   {
@@ -50,7 +50,7 @@ const packages = [
       "1-Year Maintenance Plan",
       "Smart Energy Optimizer"
     ],
-    cta: "Most Popular Choice",
+    cta: "Get Quote on WhatsApp",
     highlight: true
   },
   {
@@ -71,7 +71,7 @@ const packages = [
       "VIP Engineering Support",
       "Backup Expansion Slot"
     ],
-    cta: "Get Full Proposal",
+    cta: "Get Quote on WhatsApp",
     highlight: false
   }
 ];
@@ -159,23 +159,23 @@ export const PackagesSection: React.FC<PackagesSectionProps> = ({ onPackageSelec
 
               <div className="flex flex-col gap-3 mt-auto">
                 <button 
-                  onClick={() => onPackageSelect(pkg.name)}
+                  onClick={() => onChatWithPackage(pkg.name)}
                   className={`w-full py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all flex items-center justify-center gap-2 group ${
                     pkg.highlight 
                       ? 'bg-gold text-charcoal hover:bg-gold-light shadow-lg shadow-gold/20' 
                       : 'bg-charcoal/5 dark:bg-white/5 text-charcoal dark:text-white border border-charcoal/10 dark:border-white/10 hover:bg-charcoal/10 dark:hover:bg-white/10'
                   }`}
                 >
+                  <MessageSquare size={16} />
                   {pkg.cta}
-                  <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                 </button>
 
                 <button 
-                  onClick={() => handleChatClick(pkg.name)}
+                  onClick={() => onPackageSelect(pkg.name)}
                   className="w-full py-3 rounded-xl font-bold text-[10px] uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 border border-charcoal/5 dark:border-white/5 text-gray-500 dark:text-gray-400 hover:text-gold hover:border-gold/30 bg-transparent hover:bg-gold/5"
                 >
-                  <MessageSquare size={14} />
-                  Ask Expert about this
+                  <Globe size={14} />
+                  Order via M-Pesa
                 </button>
               </div>
             </motion.div>

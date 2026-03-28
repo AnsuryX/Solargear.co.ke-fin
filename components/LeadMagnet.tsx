@@ -159,7 +159,12 @@ export const LeadMagnet: React.FC = () => {
                       type="submit" 
                       className="bg-gold hover:bg-gold-light text-charcoal font-black text-sm py-5 rounded-xl transition-all shadow-xl shadow-gold/20 flex items-center justify-center gap-3 uppercase tracking-widest"
                     >
-                      {status === 'loading' ? <Loader2 className="animate-spin" /> : "Request Satellite Blueprint"}
+                      {status === 'loading' ? <Loader2 className="animate-spin" /> : (
+                        <>
+                          <MessageCircle size={18} />
+                          Get Free Quote on WhatsApp
+                        </>
+                      )}
                     </button>
                     
                     <p className="text-[9px] text-center text-gray-600 font-bold uppercase tracking-widest">

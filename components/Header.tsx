@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Logo } from './Logo';
-import { Phone, ArrowRight, Sun, Moon } from 'lucide-react';
+import { Phone, ArrowRight, Sun, Moon, MessageCircle } from 'lucide-react';
 import { trackEvent } from '../lib/analytics';
 
 interface HeaderProps {
@@ -96,13 +96,14 @@ export const Header: React.FC<HeaderProps> = ({ onLogoClick, isDarkMode, onTheme
           
           <button
             onClick={handleAssessmentClick}
-            className={`px-6 py-3 rounded-full font-black text-[10px] uppercase tracking-widest transition-all ${
+            className={`px-6 py-3 rounded-full font-black text-[10px] uppercase tracking-widest transition-all flex items-center gap-2 ${
               scrolled 
                 ? 'bg-gold text-charcoal hover:bg-gold-light' 
                 : 'bg-charcoal dark:bg-white/10 text-white hover:bg-charcoal/90 dark:hover:bg-white/20'
             }`}
           >
-            Get Free Assessment
+            <MessageCircle size={14} />
+            Get Quote on WhatsApp
           </button>
         </div>
       </div>

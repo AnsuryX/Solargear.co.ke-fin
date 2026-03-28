@@ -117,6 +117,21 @@ export const Footer: React.FC<FooterProps> = ({ onPrivacyClick }) => {
                   <p className="text-sm text-charcoal dark:text-white font-bold">hello@solargear.co.ke</p>
                 </div>
               </div>
+
+              <a 
+                href="https://wa.me/254722371250" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-4 group bg-gold/5 p-4 rounded-2xl border border-gold/10 hover:bg-gold/10 transition-all"
+              >
+                <div className="p-3 bg-gold text-charcoal rounded-xl">
+                  <Phone size={18} />
+                </div>
+                <div>
+                  <p className="text-[10px] text-gold uppercase font-black tracking-widest">WhatsApp Quote</p>
+                  <p className="text-sm text-charcoal dark:text-white font-bold">Chat with Engineer</p>
+                </div>
+              </a>
             </div>
           </div>
         </div>
