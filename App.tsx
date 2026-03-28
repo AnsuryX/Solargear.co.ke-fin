@@ -34,12 +34,22 @@ function App() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [showGreeting, setShowGreeting] = useState(false);
   const [prefillChatMessage, setPrefillChatMessage] = useState<string | null>(null);
+  const [isDarkMode, setIsDarkMode] = useState(true); // Default to dark as per original design
   const [purchaseModal, setPurchaseModal] = useState<{ isOpen: boolean; packageName: string }>({
     isOpen: false,
     packageName: ''
   });
 
   useEffect(() => {
+    // Initialize theme
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+      setIsDarkMode(false);
+      document.documentElement.classList.remove('dark');
+    } else {
+      document.documentElement.classList.add('dark');
+    }
+
     // Show proactive greeting after 5 seconds
     const timer = setTimeout(() => setShowGreeting(true), 5000);
     
@@ -59,6 +69,19 @@ function App() {
       clearTimeout(timer);
     };
   }, []);
+
+  const toggleTheme = () => {
+    const newMode = !isDarkMode;
+    setIsDarkMode(newMode);
+    if (newMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+    trackEvent('theme_toggle', { mode: newMode ? 'dark' : 'light' });
+  };
 
   const handlePackageSelect = (name: string) => {
     setPurchaseModal({ isOpen: true, packageName: name });
@@ -93,9 +116,9 @@ function App() {
 
   if (currentPage === 'privacy') {
     return (
-      <div className="min-h-screen bg-charcoal text-white selection:bg-gold selection:text-charcoal font-sans">
-        <Header onLogoClick={navigateToHome} />
-        <Suspense fallback={<div className="h-screen bg-charcoal" />}>
+      <div className="min-h-screen bg-white dark:bg-charcoal text-charcoal dark:text-white selection:bg-gold selection:text-charcoal font-sans transition-colors duration-300">
+        <Header onLogoClick={navigateToHome} isDarkMode={isDarkMode} onThemeToggle={toggleTheme} />
+        <Suspense fallback={<div className="h-screen bg-white dark:bg-charcoal" />}>
           <PrivacyPolicy onBack={navigateToHome} />
           <Footer onPrivacyClick={navigateToPrivacy} />
         </Suspense>
@@ -104,8 +127,8 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-charcoal text-white selection:bg-gold selection:text-charcoal font-sans">
-      <Header onLogoClick={navigateToHome} />
+    <div className="min-h-screen bg-white dark:bg-charcoal text-charcoal dark:text-white selection:bg-gold selection:text-charcoal font-sans transition-colors duration-300">
+      <Header onLogoClick={navigateToHome} isDarkMode={isDarkMode} onThemeToggle={toggleTheme} />
       
       <Hero 
         onChatClick={handleGeneralChat} 

@@ -83,17 +83,17 @@ export const PackagesSection: React.FC<PackagesSectionProps> = ({ onPackageSelec
   };
 
   return (
-    <section id="packages" className="py-24 bg-[#0A0A0A] relative overflow-hidden">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+    <section id="packages" className="py-24 bg-white dark:bg-[#0A0A0A] relative overflow-hidden transition-colors duration-300">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-charcoal/10 dark:via-white/10 to-transparent"></div>
       
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
           <div className="inline-block px-4 py-1.5 mb-6 border border-gold/30 rounded-full bg-gold/5 backdrop-blur-md">
             <span className="text-gold text-[10px] font-bold uppercase tracking-[0.2em]">Scalable Residential Engineering</span>
           </div>
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Transparent Home Packages</h2>
-          <p className="text-gray-400 max-w-2xl mx-auto font-medium">
-            No fixed one-size-fits-all prices. We provide estimated ranges based on high-quality Tier-1 tech, finalized after your <span className="text-white">Free Remote 3D Audit.</span>
+          <h2 className="text-3xl md:text-5xl font-bold text-charcoal dark:text-white mb-6">Transparent Home Packages</h2>
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto font-medium">
+            No fixed one-size-fits-all prices. We provide estimated ranges based on high-quality Tier-1 tech, finalized after your <span className="text-charcoal dark:text-white">Free Remote 3D Audit.</span>
           </p>
         </div>
 
@@ -107,8 +107,8 @@ export const PackagesSection: React.FC<PackagesSectionProps> = ({ onPackageSelec
               viewport={{ once: true }}
               className={`relative flex flex-col p-8 rounded-[2.5rem] border transition-all duration-500 ${
                 pkg.highlight 
-                  ? 'bg-gradient-to-b from-white/10 to-transparent border-gold/50 shadow-2xl shadow-gold/5' 
-                  : 'bg-white/5 border-white/10 hover:border-white/20'
+                  ? 'bg-gradient-to-b from-charcoal/5 to-transparent dark:from-white/10 dark:to-transparent border-gold/50 shadow-2xl shadow-gold/5' 
+                  : 'bg-charcoal/5 dark:bg-white/5 border-charcoal/10 dark:border-white/10 hover:border-charcoal/20 dark:hover:border-white/20'
               }`}
             >
               {pkg.highlight && (
@@ -118,26 +118,26 @@ export const PackagesSection: React.FC<PackagesSectionProps> = ({ onPackageSelec
               )}
 
               <div className="mb-8">
-                <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mb-6">
+                <div className="w-16 h-16 bg-charcoal/5 dark:bg-white/5 rounded-2xl flex items-center justify-center mb-6">
                   {pkg.icon}
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-2">{pkg.name}</h3>
+                <h3 className="text-2xl font-bold text-charcoal dark:text-white mb-2">{pkg.name}</h3>
                 <p className="text-gray-500 text-sm leading-relaxed min-h-[60px]">{pkg.description}</p>
               </div>
 
               <div className="mb-8">
                 <div className="flex flex-col gap-1">
                   <span className="text-[10px] text-gray-500 uppercase font-black tracking-widest">{pkg.priceLabel}</span>
-                  <span className="text-3xl font-black text-white">{pkg.price}</span>
+                  <span className="text-3xl font-black text-charcoal dark:text-white">{pkg.price}</span>
                 </div>
                 <p className="text-[10px] text-gray-500 uppercase tracking-widest font-bold mt-2">Finalized via Satellite Audit</p>
               </div>
 
               <div className="space-y-4 mb-8">
-                <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest border-b border-white/10 pb-2">Hardware Specs</p>
+                <p className="text-[10px] text-gray-500 dark:text-gray-400 font-black uppercase tracking-widest border-b border-charcoal/10 dark:border-white/10 pb-2">Hardware Specs</p>
                 <ul className="space-y-3">
                   {pkg.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-start gap-3 text-sm text-gray-300">
+                    <li key={idx} className="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-300">
                       <Check size={16} className="text-gold shrink-0 mt-0.5" />
                       <span>{feature}</span>
                     </li>
@@ -149,7 +149,7 @@ export const PackagesSection: React.FC<PackagesSectionProps> = ({ onPackageSelec
                 <p className="text-[10px] text-gold font-black uppercase tracking-widest border-b border-gold/20 pb-2">Founding Bonuses</p>
                 <ul className="space-y-3">
                   {pkg.bonuses.map((bonus, idx) => (
-                    <li key={idx} className="flex items-start gap-3 text-[13px] text-white/90 font-bold">
+                    <li key={idx} className="flex items-start gap-3 text-[13px] text-charcoal/90 dark:text-white/90 font-bold">
                       <Plus size={16} className="text-gold shrink-0 mt-0.5" />
                       <span>{bonus}</span>
                     </li>
@@ -163,7 +163,7 @@ export const PackagesSection: React.FC<PackagesSectionProps> = ({ onPackageSelec
                   className={`w-full py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all flex items-center justify-center gap-2 group ${
                     pkg.highlight 
                       ? 'bg-gold text-charcoal hover:bg-gold-light shadow-lg shadow-gold/20' 
-                      : 'bg-white/5 text-white border border-white/10 hover:bg-white/10'
+                      : 'bg-charcoal/5 dark:bg-white/5 text-charcoal dark:text-white border border-charcoal/10 dark:border-white/10 hover:bg-charcoal/10 dark:hover:bg-white/10'
                   }`}
                 >
                   {pkg.cta}
@@ -172,7 +172,7 @@ export const PackagesSection: React.FC<PackagesSectionProps> = ({ onPackageSelec
 
                 <button 
                   onClick={() => handleChatClick(pkg.name)}
-                  className="w-full py-3 rounded-xl font-bold text-[10px] uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 border border-white/5 text-gray-400 hover:text-gold hover:border-gold/30 bg-white/0 hover:bg-gold/5"
+                  className="w-full py-3 rounded-xl font-bold text-[10px] uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 border border-charcoal/5 dark:border-white/5 text-gray-500 dark:text-gray-400 hover:text-gold hover:border-gold/30 bg-transparent hover:bg-gold/5"
                 >
                   <MessageSquare size={14} />
                   Ask Expert about this

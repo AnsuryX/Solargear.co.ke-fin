@@ -45,7 +45,7 @@ export const Logo: React.FC<LogoProps> = ({ className = "", variant = 'full', si
       
       {variant === 'full' && (
         <div className="flex flex-col">
-          <span className="text-white font-black text-xl leading-none tracking-tighter uppercase">
+          <span className="text-charcoal dark:text-white font-black text-xl leading-none tracking-tighter uppercase">
             SOLAR GEAR<span className="text-gold">.</span>
           </span>
           <span className="text-gold text-[8px] font-bold uppercase tracking-[0.3em] mt-1">

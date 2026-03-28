@@ -39,7 +39,7 @@ export const OfferSection: React.FC = () => {
   ];
 
   return (
-    <section id="how-it-works" className="py-32 bg-gradient-to-b from-[#111] to-charcoal relative">
+    <section id="how-it-works" className="py-32 bg-white dark:bg-gradient-to-b dark:from-[#111] dark:to-charcoal relative transition-colors duration-300">
       <div className="container mx-auto px-6">
         
         <motion.div 
@@ -57,9 +57,9 @@ export const OfferSection: React.FC = () => {
             <div className="inline-flex items-center gap-2 text-gold text-xs font-black uppercase tracking-widest mb-4">
               <Lock size={14} /> Price Protection Guarantee
             </div>
-            <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">The Founding Member Offer 🚀</h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light leading-relaxed">
-              We aren't just selling panels. We're building <span className="text-white font-bold">Kenya's most reliable energy circle.</span> Join the first 50 families for these exclusive engineering bonuses.
+            <h2 className="text-4xl md:text-6xl font-bold text-charcoal dark:text-white mb-6 leading-tight">The Founding Member Offer 🚀</h2>
+            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto font-light leading-relaxed">
+              We aren't just selling panels. We're building <span className="text-charcoal dark:text-white font-bold">Kenya's most reliable energy circle.</span> Join the first 50 families for these exclusive engineering bonuses.
             </p>
           </div>
 
@@ -76,22 +76,22 @@ export const OfferSection: React.FC = () => {
                 <div className={`w-20 h-20 mx-auto ${perk.bg} ${perk.color} rounded-[2rem] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500 shadow-xl`}>
                   {perk.icon}
                 </div>
-                <h3 className="text-white font-bold text-xl mb-2 leading-tight">{perk.title}</h3>
+                <h3 className="text-charcoal dark:text-white font-bold text-xl mb-2 leading-tight">{perk.title}</h3>
                 <p className="text-sm text-gray-500 font-medium px-4">{perk.desc}</p>
               </motion.div>
             ))}
           </div>
           
           {/* ROI Proof Line */}
-          <div className="mt-20 pt-10 border-t border-white/5 text-center">
+          <div className="mt-20 pt-10 border-t border-charcoal/5 dark:border-white/5 text-center">
             <div className="flex flex-wrap justify-center gap-8 items-center opacity-60">
-              <div className="flex items-center gap-2 text-white font-bold text-xs uppercase tracking-widest">
+              <div className="flex items-center gap-2 text-charcoal dark:text-white font-bold text-xs uppercase tracking-widest">
                 <CheckCircle size={14} className="text-gold" /> Payback in 48 Months
               </div>
-              <div className="flex items-center gap-2 text-white font-bold text-xs uppercase tracking-widest">
+              <div className="flex items-center gap-2 text-charcoal dark:text-white font-bold text-xs uppercase tracking-widest">
                 <CheckCircle size={14} className="text-gold" /> KPLC Price Protection
               </div>
-              <div className="flex items-center gap-2 text-white font-bold text-xs uppercase tracking-widest">
+              <div className="flex items-center gap-2 text-charcoal dark:text-white font-bold text-xs uppercase tracking-widest">
                 <CheckCircle size={14} className="text-gold" /> 25-Year Panel Warranty
               </div>
             </div>
@@ -100,12 +100,12 @@ export const OfferSection: React.FC = () => {
 
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-white uppercase tracking-[0.3em] opacity-50 mb-4">The Scalable Blueprint</h2>
+            <h2 className="text-3xl font-bold text-charcoal dark:text-white uppercase tracking-[0.3em] opacity-50 mb-4">The Scalable Blueprint</h2>
             <p className="text-gray-500 text-sm font-bold uppercase tracking-widest">Remote First • Site Verified • Expert Built</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16 text-center relative">
-            <div className="hidden md:block absolute top-12 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent z-0"></div>
+            <div className="hidden md:block absolute top-12 left-0 w-full h-px bg-gradient-to-r from-transparent via-charcoal/10 dark:via-white/10 to-transparent z-0"></div>
 
             {[
               { 
@@ -132,10 +132,10 @@ export const OfferSection: React.FC = () => {
                 viewport={{ once: true }}
                 className="relative z-10"
               >
-                <div className={`w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-8 font-black text-3xl transition-all duration-500 ${i === 2 ? 'bg-gold text-charcoal shadow-2xl shadow-gold/30 ring-8 ring-gold/10' : 'bg-charcoal border border-white/10 text-white/50'}`}>
+                <div className={`w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-8 font-black text-3xl transition-all duration-500 ${i === 2 ? 'bg-gold text-charcoal shadow-2xl shadow-gold/30 ring-8 ring-gold/10' : 'bg-charcoal/5 dark:bg-charcoal border border-charcoal/10 dark:border-white/10 text-charcoal/50 dark:text-white/50'}`}>
                   {item.step}
                 </div>
-                <h3 className="text-white font-bold text-2xl mb-4 tracking-tight">{item.title}</h3>
+                <h3 className="text-charcoal dark:text-white font-bold text-2xl mb-4 tracking-tight">{item.title}</h3>
                 <p className="text-gray-500 leading-relaxed font-light">{item.desc}</p>
               </motion.div>
             ))}

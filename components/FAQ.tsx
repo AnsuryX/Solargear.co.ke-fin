@@ -34,7 +34,7 @@ export const FAQ: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="py-32 bg-charcoal border-t border-white/5 relative">
+    <section id="faq" className="py-32 bg-white dark:bg-charcoal border-t border-charcoal/5 dark:border-white/5 relative transition-colors duration-300">
       <div className="absolute top-0 right-0 w-1/4 h-1/4 bg-gold/5 blur-[120px] rounded-full pointer-events-none"></div>
       
       <div className="container mx-auto px-6 max-w-3xl relative z-10">
@@ -47,8 +47,8 @@ export const FAQ: React.FC = () => {
           <div className="inline-flex items-center gap-2 text-gold/60 text-xs font-bold uppercase tracking-[0.3em] mb-4">
             <HelpCircle size={14} /> Knowledge Base
           </div>
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">Kenya Solar Guide & FAQ</h2>
-          <p className="text-gray-500 font-medium">Everything you need to know about professional solar installers in Kenya.</p>
+          <h2 className="text-3xl md:text-5xl font-bold text-charcoal dark:text-white mb-4">Kenya Solar Guide & FAQ</h2>
+          <p className="text-gray-600 dark:text-gray-500 font-medium">Everything you need to know about professional solar installers in Kenya.</p>
         </motion.div>
 
         <div className="space-y-4">
@@ -62,17 +62,17 @@ export const FAQ: React.FC = () => {
               className={`border rounded-2xl overflow-hidden transition-all duration-300 ${
                 activeIndex === index 
                   ? 'border-gold/30 bg-gold/5 shadow-lg shadow-gold/5' 
-                  : 'border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/[0.07]'
+                  : 'border-charcoal/10 dark:border-white/10 bg-charcoal/5 dark:bg-white/5 hover:border-charcoal/20 dark:hover:border-white/20 hover:bg-charcoal/[0.07] dark:hover:bg-white/[0.07]'
               }`}
             >
               <button 
                 onClick={() => setActiveIndex(activeIndex === index ? null : index)}
                 className="w-full p-6 text-left flex justify-between items-center gap-4 transition-colors"
               >
-                <span className={`text-lg font-bold leading-snug transition-colors ${activeIndex === index ? 'text-gold' : 'text-white'}`}>
+                <span className={`text-lg font-bold leading-snug transition-colors ${activeIndex === index ? 'text-gold' : 'text-charcoal dark:text-white'}`}>
                   {faq.q}
                 </span>
-                <div className={`shrink-0 transition-all duration-300 p-2 rounded-full ${activeIndex === index ? 'bg-gold text-charcoal rotate-180' : 'bg-white/5 text-gold'}`}>
+                <div className={`shrink-0 transition-all duration-300 p-2 rounded-full ${activeIndex === index ? 'bg-gold text-charcoal rotate-180' : 'bg-charcoal/5 dark:bg-white/5 text-gold'}`}>
                   {activeIndex === index ? <Minus size={18} /> : <Plus size={18} />}
                 </div>
               </button>
@@ -85,7 +85,7 @@ export const FAQ: React.FC = () => {
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
                   >
-                    <div className="px-6 pb-8 text-gray-400 leading-relaxed border-t border-white/5 pt-6 text-[15px]">
+                    <div className="px-6 pb-8 text-gray-600 dark:text-gray-400 leading-relaxed border-t border-charcoal/5 dark:border-white/5 pt-6 text-[15px]">
                       {faq.a}
                     </div>
                   </motion.div>
@@ -95,8 +95,8 @@ export const FAQ: React.FC = () => {
           ))}
         </div>
 
-        <div className="mt-20 text-center p-10 rounded-[2rem] bg-white/5 border border-white/10 backdrop-blur-sm">
-          <p className="text-gray-400 mb-6 font-medium italic">Still have questions about your specific site requirements?</p>
+        <div className="mt-20 text-center p-10 rounded-[2rem] bg-charcoal/5 dark:bg-white/5 border border-charcoal/10 dark:border-white/10 backdrop-blur-sm">
+          <p className="text-gray-600 dark:text-gray-400 mb-6 font-medium italic">Still have questions about your specific site requirements?</p>
           <a 
             href="https://wa.me/254722371250" 
             target="_blank"

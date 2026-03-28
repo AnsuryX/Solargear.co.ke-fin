@@ -19,7 +19,7 @@
     
     <!-- Critical CSS for Hero - Inline for Speed -->
     <style>
-      body { background-color: #1A1A1A; color: white; margin: 0; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+      body { margin: 0; font-family: 'Inter', sans-serif; overflow-x: hidden; }
       #root { min-height: 100vh; }
       .initial-loading { display: flex; align-items: center; justify-content: center; height: 100vh; background: #1A1A1A; }
     </style>
@@ -27,6 +27,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
+        darkMode: 'class',
         theme: {
           extend: {
             colors: {

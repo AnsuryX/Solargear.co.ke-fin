@@ -70,11 +70,11 @@ export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
   };
 
   return (
-    <section className="relative min-h-screen w-full bg-charcoal flex items-center overflow-hidden">
+    <section className="relative min-h-screen w-full bg-white dark:bg-charcoal flex items-center overflow-hidden transition-colors duration-300">
       {/* Background Layer */}
       <div className="absolute inset-0 z-0">
         {shouldShowSpline ? (
-          <React.Suspense fallback={<div className="w-full h-full bg-[#121212]" />}>
+          <React.Suspense fallback={<div className="w-full h-full bg-gray-100 dark:bg-[#121212]" />}>
             <div className="w-full h-full opacity-100">
               <SplineScene 
                 scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
@@ -83,9 +83,9 @@ export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
             </div>
           </React.Suspense>
         ) : (
-          <div className="absolute inset-0 bg-[#121212]">
+          <div className="absolute inset-0 bg-gray-100 dark:bg-[#121212]">
             <div className="absolute top-[-10%] right-[-10%] w-[80%] h-[80%] bg-gold/10 blur-[120px] rounded-full"></div>
-            <div className="absolute bottom-0 left-0 w-full h-full bg-gradient-to-t from-charcoal via-transparent to-transparent"></div>
+            <div className="absolute bottom-0 left-0 w-full h-full bg-gradient-to-t from-white dark:from-charcoal via-transparent to-transparent"></div>
           </div>
         )}
       </div>
@@ -115,7 +115,7 @@ export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
             </div>
 
             {/* Main Headline */}
-            <h1 className="text-6xl md:text-8xl font-black text-white mb-8 leading-[0.95] tracking-tighter">
+            <h1 className="text-6xl md:text-8xl font-black text-charcoal dark:text-white mb-8 leading-[0.95] tracking-tighter">
               BEYOND <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold via-gold-light to-gold-dark">
                 BACKUP.
@@ -125,21 +125,21 @@ export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
             {/* High-Impact Subtext */}
             <div className="flex flex-col md:flex-row gap-8 items-start mb-12">
               <div className="max-w-md">
-                <p className="text-xl md:text-2xl text-white/90 font-medium mb-4 leading-tight">
+                <p className="text-xl md:text-2xl text-charcoal/90 dark:text-white/90 font-medium mb-4 leading-tight">
                   Premium Solar Engineering for <span className="text-gold italic">Kenya’s Finest Homes.</span>
                 </p>
-                <p className="text-gray-400 font-light leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-400 font-light leading-relaxed">
                   From the capital city to rural retreats, we design energy independence. Stop KPLC reliance today with Kenya's most trusted residential solar partner.
                 </p>
               </div>
 
               {/* Quick Stats Grid */}
               <div className="grid grid-cols-2 gap-4 w-full md:w-auto">
-                <div className="p-4 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-sm">
+                <div className="p-4 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-2xl backdrop-blur-sm">
                   <div className="text-gold font-black text-2xl">47</div>
                   <div className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Counties Served</div>
                 </div>
-                <div className="p-4 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-sm">
+                <div className="p-4 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-2xl backdrop-blur-sm">
                   <div className="text-gold font-black text-2xl">0%</div>
                   <div className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Blackout Risk</div>
                 </div>
@@ -158,7 +158,7 @@ export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
               
               <button 
                 onClick={handleChatClick}
-                className="bg-transparent border-2 border-white/20 text-white py-5 px-12 rounded-sm font-bold transition-all flex items-center justify-center gap-3 group active:scale-95"
+                className="bg-transparent border-2 border-charcoal/20 dark:border-white/20 text-charcoal dark:text-white py-5 px-12 rounded-sm font-bold transition-all flex items-center justify-center gap-3 group active:scale-95"
               >
                 <MessageCircle size={20} className="group-hover:text-gold transition-colors" />
                 {ctaLabels.secondary}
