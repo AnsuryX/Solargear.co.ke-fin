@@ -6,6 +6,7 @@ import { MessageCircle, Loader2, X, Sparkles } from 'lucide-react';
 import { trackWhatsAppClick, trackEvent } from './lib/analytics';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { LazySection } from './components/LazySection';
 
 // Lazy load heavy components
 const ProblemSection = lazy(() => import('./components/ProblemSection').then(m => ({ default: m.ProblemSection })));
@@ -25,7 +26,7 @@ const PackagePurchaseModal = lazy(() => import('./components/PackagePurchaseModa
 const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy').then(m => ({ default: m.PrivacyPolicy })));
 
 const SectionLoader = () => (
-  <div className="w-full h-40 flex items-center justify-center bg-charcoal">
+  <div className="w-full h-40 flex items-center justify-center bg-white dark:bg-charcoal">
     <Loader2 className="text-gold/20 animate-spin" size={24} />
   </div>
 );
@@ -142,23 +143,58 @@ function App() {
           }}
         />
         
-        <Suspense fallback={<SectionLoader />}>
+        <LazySection threshold={0.05} rootMargin="300px">
           <ProblemSection />
+        </LazySection>
+        
+        <LazySection threshold={0.05} rootMargin="300px">
           <CalculatorSection />
+        </LazySection>
+        
+        <LazySection threshold={0.05} rootMargin="300px">
           <PackageSelectionGuide />
+        </LazySection>
+        
+        <LazySection threshold={0.05} rootMargin="300px">
           <PackagesSection 
             onPackageSelect={handlePackageSelect} 
             onChatWithPackage={handleChatWithPackage}
           />
+        </LazySection>
+        
+        <LazySection threshold={0.05} rootMargin="300px">
           <ProductSpotlight />
+        </LazySection>
+        
+        <LazySection threshold={0.05} rootMargin="300px">
           <SocialProof />
+        </LazySection>
+        
+        <LazySection threshold={0.05} rootMargin="300px">
           <TestimonialCarousel />
+        </LazySection>
+        
+        <LazySection threshold={0.05} rootMargin="300px">
           <OfferSection />
+        </LazySection>
+        
+        <LazySection threshold={0.05} rootMargin="300px">
           <RiskReversal />
+        </LazySection>
+        
+        <LazySection threshold={0.05} rootMargin="300px">
           <LeadMagnet />
+        </LazySection>
+        
+        <LazySection threshold={0.05} rootMargin="300px">
           <FAQ />
+        </LazySection>
+        
+        <LazySection threshold={0.05} rootMargin="300px">
           <Footer onPrivacyClick={navigateToPrivacy} />
-          
+        </LazySection>
+        
+        <Suspense fallback={null}>
           <AnimatePresence>
             {isChatOpen && (
               <ChatModal 

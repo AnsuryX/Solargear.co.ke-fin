@@ -1,9 +1,11 @@
 
-import React, { useMemo } from 'react';
+import React, { useMemo, lazy, Suspense } from 'react';
 import { ArrowRight, MessageCircle, ShieldCheck, Zap, Globe } from 'lucide-react';
 import { motion as motionImport, useScroll, useTransform } from 'framer-motion';
-import { Spotlight } from "./ui/spotlight";
 import { trackEvent, getABVariant } from '../lib/analytics';
+
+// Lazy load the heavy Spotlight component
+const Spotlight = lazy(() => import('./ui/spotlight').then(m => ({ default: m.Spotlight })));
 
 // Fix for framer-motion type mismatch
 const motion = motionImport as any;
@@ -106,10 +108,12 @@ export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
 
       {/* Decorative Spotlight - Loads after 1s to save initial TBT */}
       <div className="hidden md:block">
-        <Spotlight
-          className="-top-40 left-0 md:left-60 md:-top-20 z-10 opacity-30 md:opacity-60"
-          fill="#D4AF37"
-        />
+        <Suspense fallback={null}>
+          <Spotlight
+            className="-top-40 left-0 md:left-60 md:-top-20 z-10 opacity-30 md:opacity-60"
+            fill="#D4AF37"
+          />
+        </Suspense>
       </div>
 
       <div className="container mx-auto px-6 relative z-20 pt-20 lg:pt-0">

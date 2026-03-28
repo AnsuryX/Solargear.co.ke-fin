@@ -1,7 +1,8 @@
 
-import React from 'react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { HelpCircle, DollarSign, ShieldAlert, Frown } from 'lucide-react';
+import React, { lazy, Suspense } from 'react';
+import { HelpCircle, DollarSign, ShieldAlert, Frown, Loader2 } from 'lucide-react';
+
+const BillChart = lazy(() => import('./BillChart').then(m => ({ default: m.BillChart })));
 
 const data = [
   { month: 'Jan', bill: 12000 },
@@ -78,25 +79,10 @@ export const ProblemSection: React.FC = () => {
               Reality Check
             </div>
             <h3 className="text-charcoal dark:text-white mb-6 font-semibold">Electricity Prices Won't Go Down</h3>
-            <div className="h-[300px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={data}>
-                  <defs>
-                    <linearGradient id="colorBill" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#D4AF37" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#D4AF37" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#ccc" className="dark:stroke-[#333]" />
-                  <XAxis dataKey="month" stroke="#999" />
-                  <YAxis stroke="#999" unit=" KES" />
-                  <Tooltip 
-                    contentStyle={{ backgroundColor: 'var(--tooltip-bg, #fff)', borderColor: '#ccc', color: 'var(--tooltip-text, #1A1A1A)' }}
-                    itemStyle={{ color: '#D4AF37' }}
-                  />
-                  <Area type="monotone" dataKey="bill" stroke="#D4AF37" fillOpacity={1} fill="url(#colorBill)" />
-                </AreaChart>
-              </ResponsiveContainer>
+            <div className="h-[300px] w-full flex items-center justify-center">
+              <Suspense fallback={<Loader2 className="animate-spin text-gold/20" size={32} />}>
+                <BillChart />
+              </Suspense>
             </div>
             <div className="mt-4 text-center text-sm text-gray-500">
               Your bills don't have to go up. Take control the smart way.
