@@ -1,12 +1,9 @@
 
-import React, { useState, useEffect, useMemo } from 'react';
-import { ArrowRight, MessageCircle, Star, ShieldCheck, Zap, Globe } from 'lucide-react';
+import React, { useMemo } from 'react';
+import { ArrowRight, MessageCircle, ShieldCheck, Zap, Globe } from 'lucide-react';
 import { motion as motionImport, useScroll, useTransform } from 'framer-motion';
 import { Spotlight } from "./ui/spotlight";
 import { trackEvent, getABVariant } from '../lib/analytics';
-
-// Dynamic import for Spline to keep it out of the critical main bundle
-const SplineScene = React.lazy(() => import('./ui/spline').then(m => ({ default: m.SplineScene })));
 
 // Fix for framer-motion type mismatch
 const motion = motionImport as any;
@@ -29,7 +26,6 @@ const FloatingBadge = ({ icon, text, delay }: { icon: React.ReactNode, text: str
 );
 
 export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
-  const [shouldShowSpline, setShouldShowSpline] = useState(false);
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 500], [0, 100]);
 
@@ -52,16 +48,6 @@ export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
     }
   };
 
-  useEffect(() => {
-    // Only enable heavy 3D assets on desktop to save mobile PageSpeed
-    const isDesktop = window.innerWidth >= 1024;
-    if (isDesktop) {
-      // Delay Spline initialization slightly to allow initial paint
-      const timer = setTimeout(() => setShouldShowSpline(true), 500);
-      return () => clearTimeout(timer);
-    }
-  }, []);
-
   const handleExploreClick = () => {
     trackEvent('cta_click', { 
       button_name: 'explore_packages', 
@@ -82,23 +68,40 @@ export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
 
   return (
     <section className="relative min-h-screen w-full bg-white dark:bg-charcoal flex items-center overflow-hidden transition-colors duration-300">
-      {/* Background Layer */}
-      <div className="absolute inset-0 z-0">
-        {shouldShowSpline ? (
-          <React.Suspense fallback={<div className="w-full h-full bg-gray-100 dark:bg-[#121212]" />}>
-            <div className="w-full h-full opacity-100">
-              <SplineScene 
-                scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-                className="w-full h-full"
-              />
-            </div>
-          </React.Suspense>
-        ) : (
-          <div className="absolute inset-0 bg-gray-100 dark:bg-[#121212]">
-            <div className="absolute top-[-10%] right-[-10%] w-[80%] h-[80%] bg-gold/10 blur-[120px] rounded-full"></div>
-            <div className="absolute bottom-0 left-0 w-full h-full bg-gradient-to-t from-white dark:from-charcoal via-transparent to-transparent"></div>
-          </div>
-        )}
+      {/* High-Performance Background Layer */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        {/* Base Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-charcoal dark:via-[#121212] dark:to-charcoal"></div>
+        
+        {/* Subtle Grid Pattern */}
+        <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]" 
+             style={{ backgroundImage: 'radial-gradient(#D4AF37 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
+        
+        {/* Animated Glow Orbs */}
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.2, 1],
+            opacity: [0.1, 0.15, 0.1],
+            x: [0, 50, 0],
+            y: [0, -30, 0]
+          }}
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] bg-gold/20 blur-[120px] rounded-full"
+        ></motion.div>
+        
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.1, 1],
+            opacity: [0.05, 0.1, 0.05],
+            x: [0, -40, 0],
+            y: [0, 20, 0]
+          }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-gold/10 blur-[100px] rounded-full"
+        ></motion.div>
+
+        {/* Bottom Fade */}
+        <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-white dark:from-charcoal to-transparent"></div>
       </div>
 
       {/* Decorative Spotlight - Loads after 1s to save initial TBT */}

@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-charcoal: #1A1A1A;
+  --color-gold: #D4AF37;
+  --color-gold-light: #E5C565;
+  --color-gold-dark: #B59020;
+}
+
+@layer base {
+  body {
+    @apply font-sans antialiased;
+  }
+}
+
+.glass-panel {
+  @apply backdrop-blur-xl bg-white/5 border border-white/10;
+}
