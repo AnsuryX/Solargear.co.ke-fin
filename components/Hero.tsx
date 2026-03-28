@@ -36,9 +36,20 @@ export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
   // A/B Test Variant Logic
   const variant = useMemo(() => getABVariant(), []);
   
-  const ctaLabels = {
-    primary: variant === 'A' ? 'EXPLORE PACKAGES' : 'SEE SOLAR PRICES',
-    secondary: variant === 'A' ? 'CHAT WITH ENGINEER' : 'GET EXPERT ADVICE'
+  const copy = {
+    headline: variant === 'A' ? (
+      <>BEYOND <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-gold via-gold-light to-gold-dark">BACKUP.</span></>
+    ) : (
+      <>POWER YOUR <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-gold via-gold-light to-gold-dark">FREEDOM.</span></>
+    ),
+    subtext: variant === 'A' ? 'Premium Solar Engineering for Kenya’s Finest Homes.' : 'Engineered for Kenya\'s Most Exclusive Residences.',
+    description: variant === 'A' 
+      ? 'From the capital city to rural retreats, we design energy independence. Stop KPLC reliance today with Kenya\'s most trusted residential solar partner.'
+      : 'Experience true energy independence. Our high-performance solar systems ensure your home stays powered 24/7, no matter the grid status.',
+    ctaLabels: {
+      primary: variant === 'A' ? 'EXPLORE PACKAGES' : 'SEE SOLAR PRICES',
+      secondary: variant === 'A' ? 'CHAT WITH ENGINEER' : 'GET EXPERT ADVICE'
+    }
   };
 
   useEffect(() => {
@@ -55,7 +66,7 @@ export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
     trackEvent('cta_click', { 
       button_name: 'explore_packages', 
       location: 'hero',
-      label_used: ctaLabels.primary 
+      label_used: copy.ctaLabels.primary 
     });
     onProductClick();
   };
@@ -64,7 +75,7 @@ export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
     trackEvent('cta_click', { 
       button_name: 'chat_with_engineer', 
       location: 'hero',
-      label_used: ctaLabels.secondary
+      label_used: copy.ctaLabels.secondary
     });
     onChatClick();
   };
@@ -116,20 +127,22 @@ export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
 
             {/* Main Headline */}
             <h1 className="text-6xl md:text-8xl font-black text-charcoal dark:text-white mb-8 leading-[0.95] tracking-tighter">
-              BEYOND <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold via-gold-light to-gold-dark">
-                BACKUP.
-              </span>
+              {copy.headline}
             </h1>
 
             {/* High-Impact Subtext */}
             <div className="flex flex-col md:flex-row gap-8 items-start mb-12">
               <div className="max-w-md">
                 <p className="text-xl md:text-2xl text-charcoal/90 dark:text-white/90 font-medium mb-4 leading-tight">
-                  Premium Solar Engineering for <span className="text-gold italic">Kenya’s Finest Homes.</span>
+                  {copy.subtext.split('Kenya').map((part, i, arr) => (
+                    <React.Fragment key={i}>
+                      {part}
+                      {i < arr.length - 1 && <span className="text-gold italic">Kenya</span>}
+                    </React.Fragment>
+                  ))}
                 </p>
                 <p className="text-gray-600 dark:text-gray-400 font-light leading-relaxed">
-                  From the capital city to rural retreats, we design energy independence. Stop KPLC reliance today with Kenya's most trusted residential solar partner.
+                  {copy.description}
                 </p>
               </div>
 
@@ -152,7 +165,7 @@ export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
                 onClick={handleExploreClick}
                 className="relative group bg-gold text-charcoal font-black py-5 px-12 rounded-sm transition-all flex items-center justify-center gap-3 shadow-xl shadow-gold/10 active:scale-95"
               >
-                {ctaLabels.primary}
+                {copy.ctaLabels.primary}
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </button>
               
@@ -161,7 +174,7 @@ export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
                 className="bg-transparent border-2 border-charcoal/20 dark:border-white/20 text-charcoal dark:text-white py-5 px-12 rounded-sm font-bold transition-all flex items-center justify-center gap-3 group active:scale-95"
               >
                 <MessageCircle size={20} className="group-hover:text-gold transition-colors" />
-                {ctaLabels.secondary}
+                {copy.ctaLabels.secondary}
               </button>
             </div>
           </motion.div>

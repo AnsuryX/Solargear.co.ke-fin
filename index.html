@@ -21,8 +21,35 @@
     <style>
       body { margin: 0; font-family: 'Inter', sans-serif; overflow-x: hidden; }
       #root { min-height: 100vh; }
-      .initial-loading { display: flex; align-items: center; justify-content: center; height: 100vh; background: #1A1A1A; }
+      .initial-loading { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #1A1A1A; color: white; gap: 1rem; }
+      .loading-spinner { border: 2px solid #333; border-bottom-color: #D4AF37; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
+      @keyframes spin { 100% { transform: rotate(360deg); } }
+      .retry-btn { display: none; padding: 8px 16px; background: #D4AF37; color: #1A1A1A; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 12px; }
     </style>
+
+    <script>
+      // Early boot error tracking
+      window.onerror = function(msg, url, line, col, error) {
+        console.error('Boot error:', msg, 'at', url, ':', line);
+        const loadingEl = document.querySelector('.initial-loading');
+        if (loadingEl) {
+          loadingEl.innerHTML = `
+            <div style="color: #D4AF37; font-weight: bold; margin-bottom: 10px;">Failed to load application</div>
+            <div style="font-size: 10px; color: #666; max-width: 200px; text-align: center; margin-bottom: 20px;">${msg}</div>
+            <button onclick="window.location.reload()" style="padding: 8px 16px; background: #D4AF37; color: #1A1A1A; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;">RETRY</button>
+          `;
+        }
+        return false;
+      };
+
+      // Show retry button after 10 seconds if still loading
+      setTimeout(() => {
+        const retryBtn = document.querySelector('.retry-btn');
+        if (retryBtn && document.querySelector('.initial-loading')) {
+          retryBtn.style.display = 'block';
+        }
+      }, 10000);
+    </script>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -80,8 +107,9 @@
 
     <div id="root">
       <div class="initial-loading">
-        <div style="border: 2px solid #333; border-bottom-color: #D4AF37; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite;"></div>
-        <style>@keyframes spin { 100% { transform: rotate(360deg); } }</style>
+        <div class="loading-spinner"></div>
+        <div style="font-size: 10px; color: #666; letter-spacing: 0.2em; text-transform: uppercase;">Initializing Solar Hub</div>
+        <button class="retry-btn" onclick="window.location.reload()">RETRY</button>
       </div>
     </div>
     <script type="module" src="/index.tsx" defer></script>

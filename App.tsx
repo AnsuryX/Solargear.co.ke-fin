@@ -5,6 +5,7 @@ import { Hero } from './components/Hero';
 import { MessageCircle, Loader2, X, Sparkles } from 'lucide-react';
 import { trackWhatsAppClick, trackEvent } from './lib/analytics';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 // Lazy load heavy components
 const ProblemSection = lazy(() => import('./components/ProblemSection').then(m => ({ default: m.ProblemSection })));
@@ -116,108 +117,112 @@ function App() {
 
   if (currentPage === 'privacy') {
     return (
-      <div className="min-h-screen bg-white dark:bg-charcoal text-charcoal dark:text-white selection:bg-gold selection:text-charcoal font-sans transition-colors duration-300">
-        <Header onLogoClick={navigateToHome} isDarkMode={isDarkMode} onThemeToggle={toggleTheme} />
-        <Suspense fallback={<div className="h-screen bg-white dark:bg-charcoal" />}>
-          <PrivacyPolicy onBack={navigateToHome} />
-          <Footer onPrivacyClick={navigateToPrivacy} />
-        </Suspense>
-      </div>
+      <ErrorBoundary>
+        <div className="min-h-screen bg-white dark:bg-charcoal text-charcoal dark:text-white selection:bg-gold selection:text-charcoal font-sans transition-colors duration-300">
+          <Header onLogoClick={navigateToHome} isDarkMode={isDarkMode} onThemeToggle={toggleTheme} />
+          <Suspense fallback={<div className="h-screen bg-white dark:bg-charcoal" />}>
+            <PrivacyPolicy onBack={navigateToHome} />
+            <Footer onPrivacyClick={navigateToPrivacy} />
+          </Suspense>
+        </div>
+      </ErrorBoundary>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-charcoal text-charcoal dark:text-white selection:bg-gold selection:text-charcoal font-sans transition-colors duration-300">
-      <Header onLogoClick={navigateToHome} isDarkMode={isDarkMode} onThemeToggle={toggleTheme} />
-      
-      <Hero 
-        onChatClick={handleGeneralChat} 
-        onProductClick={() => {
-          const section = document.getElementById('packages');
-          if (section) section.scrollIntoView({ behavior: 'smooth' });
-        }}
-      />
-      
-      <Suspense fallback={<SectionLoader />}>
-        <ProblemSection />
-        <CalculatorSection />
-        <PackageSelectionGuide />
-        <PackagesSection 
-          onPackageSelect={handlePackageSelect} 
-          onChatWithPackage={handleChatWithPackage}
-        />
-        <ProductSpotlight />
-        <SocialProof />
-        <TestimonialCarousel />
-        <OfferSection />
-        <RiskReversal />
-        <LeadMagnet />
-        <FAQ />
-        <Footer onPrivacyClick={navigateToPrivacy} />
+    <ErrorBoundary>
+      <div className="min-h-screen bg-white dark:bg-charcoal text-charcoal dark:text-white selection:bg-gold selection:text-charcoal font-sans transition-colors duration-300">
+        <Header onLogoClick={navigateToHome} isDarkMode={isDarkMode} onThemeToggle={toggleTheme} />
         
-        <AnimatePresence>
-          {isChatOpen && (
-            <ChatModal 
-              isOpen={isChatOpen} 
-              prefillMessage={prefillChatMessage}
-              onClose={closeChat} 
+        <Hero 
+          onChatClick={handleGeneralChat} 
+          onProductClick={() => {
+            const section = document.getElementById('packages');
+            if (section) section.scrollIntoView({ behavior: 'smooth' });
+          }}
+        />
+        
+        <Suspense fallback={<SectionLoader />}>
+          <ProblemSection />
+          <CalculatorSection />
+          <PackageSelectionGuide />
+          <PackagesSection 
+            onPackageSelect={handlePackageSelect} 
+            onChatWithPackage={handleChatWithPackage}
+          />
+          <ProductSpotlight />
+          <SocialProof />
+          <TestimonialCarousel />
+          <OfferSection />
+          <RiskReversal />
+          <LeadMagnet />
+          <FAQ />
+          <Footer onPrivacyClick={navigateToPrivacy} />
+          
+          <AnimatePresence>
+            {isChatOpen && (
+              <ChatModal 
+                isOpen={isChatOpen} 
+                prefillMessage={prefillChatMessage}
+                onClose={closeChat} 
+              />
+            )}
+          </AnimatePresence>
+  
+          {purchaseModal.isOpen && (
+            <PackagePurchaseModal 
+              isOpen={purchaseModal.isOpen}
+              packageName={purchaseModal.packageName}
+              onClose={() => setPurchaseModal({ ...purchaseModal, isOpen: false })}
             />
           )}
-        </AnimatePresence>
-
-        {purchaseModal.isOpen && (
-          <PackagePurchaseModal 
-            isOpen={purchaseModal.isOpen}
-            packageName={purchaseModal.packageName}
-            onClose={() => setPurchaseModal({ ...purchaseModal, isOpen: false })}
-          />
-        )}
-      </Suspense>
-
-      {/* Persistent AI Chat Hub */}
-      <div className="fixed bottom-6 right-6 z-[120] flex flex-col items-end gap-3 pointer-events-none">
-        <AnimatePresence>
-          {showGreeting && !isChatOpen && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              className="bg-white p-4 rounded-2xl rounded-br-none shadow-2xl border border-gold/20 max-w-[240px] pointer-events-auto relative mb-2"
-            >
-              <button 
-                onClick={() => setShowGreeting(false)}
-                className="absolute -top-2 -left-2 bg-charcoal text-white rounded-full p-1 border border-white/10 hover:bg-gold hover:text-charcoal transition-colors"
+        </Suspense>
+  
+        {/* Persistent AI Chat Hub */}
+        <div className="fixed bottom-6 right-6 z-[120] flex flex-col items-end gap-3 pointer-events-none">
+          <AnimatePresence>
+            {showGreeting && !isChatOpen && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                className="bg-white p-4 rounded-2xl rounded-br-none shadow-2xl border border-gold/20 max-w-[240px] pointer-events-auto relative mb-2"
               >
-                <X size={12} />
-              </button>
-              <div className="flex gap-2">
-                <div className="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center shrink-0">
-                   <Sparkles size={14} className="text-gold" />
+                <button 
+                  onClick={() => setShowGreeting(false)}
+                  className="absolute -top-2 -left-2 bg-charcoal text-white rounded-full p-1 border border-white/10 hover:bg-gold hover:text-charcoal transition-colors"
+                >
+                  <X size={12} />
+                </button>
+                <div className="flex gap-2">
+                  <div className="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center shrink-0">
+                     <Sparkles size={14} className="text-gold" />
+                  </div>
+                  <p className="text-[11px] text-charcoal font-bold leading-tight">
+                    Hi! 👋 I'm your AI Solar Engineer. Want a quick estimate for your home?
+                  </p>
                 </div>
-                <p className="text-[11px] text-charcoal font-bold leading-tight">
-                  Hi! 👋 I'm your AI Solar Engineer. Want a quick estimate for your home?
-                </p>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <button
-          onClick={handleGeneralChat}
-          className="pointer-events-auto bg-gold text-charcoal p-4 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all group flex items-center gap-3 border-4 border-charcoal relative overflow-hidden"
-          aria-label="Open AI Solar Hub"
-        >
-          <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>
-          <div className="relative">
-            <MessageCircle size={32} strokeWidth={2.5} />
-            <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-charcoal animate-pulse"></span>
-          </div>
-          <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 whitespace-nowrap font-black text-sm uppercase tracking-widest px-0 group-hover:pr-2">
-            Ask Engineer
-          </span>
-        </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+  
+          <button
+            onClick={handleGeneralChat}
+            className="pointer-events-auto bg-gold text-charcoal p-4 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all group flex items-center gap-3 border-4 border-charcoal relative overflow-hidden"
+            aria-label="Open AI Solar Hub"
+          >
+            <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>
+            <div className="relative">
+              <MessageCircle size={32} strokeWidth={2.5} />
+              <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-charcoal animate-pulse"></span>
+            </div>
+            <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 whitespace-nowrap font-black text-sm uppercase tracking-widest px-0 group-hover:pr-2">
+              Ask Engineer
+            </span>
+          </button>
+        </div>
       </div>
-    </div>
+    </ErrorBoundary>
   );
 }
 
