@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { motion as motionImport, AnimatePresence } from 'framer-motion';
-import { X, MessageCircle, User, Phone, CheckCircle2, Loader2, ArrowRight, Globe } from 'lucide-react';
+import { X, MessageCircle, User, Phone, CheckCircle2, Loader2, ArrowRight, Globe, Copy } from 'lucide-react';
 import { trackLeadSubmission, trackWhatsAppClick } from '../lib/analytics';
 
 // Fix for framer-motion type mismatch in the current environment
@@ -18,6 +18,13 @@ const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xrezgbrp';
 export const PackagePurchaseModal: React.FC<PackagePurchaseModalProps> = ({ isOpen, onClose, packageName }) => {
   const [formData, setFormData] = useState({ name: '', phone: '' });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
+  const [copiedField, setCopiedField] = useState<string | null>(null);
+
+  const copyToClipboard = (text: string, field: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedField(field);
+    setTimeout(() => setCopiedField(null), 2000);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,18 +70,34 @@ export const PackagePurchaseModal: React.FC<PackagePurchaseModalProps> = ({ isOp
     }, 1500);
   };
 
+  // Handle Escape key
+  React.useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [onClose]);
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md">
+    <div 
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md cursor-pointer"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
       <motion.div 
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        className="bg-charcoal border border-white/10 w-full max-w-md rounded-[2.5rem] overflow-hidden shadow-2xl relative"
+        className="bg-charcoal border border-white/10 w-full max-w-md rounded-[2.5rem] overflow-hidden shadow-2xl relative cursor-default"
+        onClick={(e: React.MouseEvent) => e.stopPropagation()}
       >
         <button 
           onClick={onClose}
-          className="absolute top-6 right-6 text-gray-500 hover:text-white transition-colors z-10"
+          className="absolute top-6 right-6 text-gray-500 hover:text-white transition-colors z-10 p-2"
+          aria-label="Close modal"
         >
           <X size={24} />
         </button>
@@ -161,28 +184,54 @@ export const PackagePurchaseModal: React.FC<PackagePurchaseModalProps> = ({ isOp
                   </div>
 
                   <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center text-green-500">
-                        <Globe size={20} />
+                    <div className="flex items-center justify-between group/item">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center text-green-500">
+                          <Globe size={20} />
+                        </div>
+                        <div>
+                          <p className="text-[10px] text-gray-500 uppercase font-black tracking-widest">M-Pesa Paybill</p>
+                          <p className="text-xl font-black text-white">247247</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-[10px] text-gray-500 uppercase font-black tracking-widest">M-Pesa Paybill</p>
-                        <p className="text-xl font-black text-white">400222</p>
-                      </div>
+                      <button 
+                        type="button"
+                        onClick={() => copyToClipboard('247247', 'paybill')}
+                        className="p-2 hover:bg-white/10 rounded-lg transition-colors text-gray-500 hover:text-gold flex items-center gap-2"
+                      >
+                        {copiedField === 'paybill' ? <span className="text-[10px] font-black uppercase">Copied!</span> : <Copy size={16} />}
+                      </button>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gold/20 rounded-full flex items-center justify-center text-gold">
-                        <CheckCircle2 size={20} />
+                    <div className="flex items-center justify-between group/item">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-gold/20 rounded-full flex items-center justify-center text-gold">
+                          <CheckCircle2 size={20} />
+                        </div>
+                        <div>
+                          <p className="text-[10px] text-gray-500 uppercase font-black tracking-widest">Account No</p>
+                          <p className="text-xl font-black text-white">0840172108969</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-[10px] text-gray-500 uppercase font-black tracking-widest">Account Name</p>
-                        <p className="text-xl font-black text-white">SOLARGEAR</p>
-                      </div>
+                      <button 
+                        type="button"
+                        onClick={() => copyToClipboard('0840172108969', 'account')}
+                        className="p-2 hover:bg-white/10 rounded-lg transition-colors text-gray-500 hover:text-gold flex items-center gap-2"
+                      >
+                        {copiedField === 'account' ? <span className="text-[10px] font-black uppercase">Copied!</span> : <Copy size={16} />}
+                      </button>
                     </div>
                     <p className="text-[10px] text-gray-500 font-bold leading-tight">
                       *Please send us the confirmation code on WhatsApp after making the payment to finalize your order.
                     </p>
                   </div>
+                  
+                  <button 
+                    type="button"
+                    onClick={onClose}
+                    className="w-full py-3 text-gray-500 hover:text-white text-[10px] font-black uppercase tracking-[0.2em] transition-colors"
+                  >
+                    Dismiss & Continue Browsing
+                  </button>
                 </form>
 
                 <p className="text-[10px] text-center text-gray-600 font-bold uppercase tracking-widest">

@@ -85,6 +85,15 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, prefillMe
     window.open("https://wa.me/254722371250?text=Hi%20Solar%20Gear%2C%20I'm%20chatting%20with%20your%20AI%20but%20want%20to%20speak%20with%20a%20human%20engineer%20now.", "_blank");
   };
 
+  // Handle Escape key
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [onClose]);
+
   if (!isOpen) return null;
 
   return (
@@ -92,13 +101,17 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, prefillMe
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[150] flex items-end md:items-center justify-center p-0 md:p-4 bg-black/80 backdrop-blur-sm"
+      className="fixed inset-0 z-[150] flex items-end md:items-center justify-center p-0 md:p-4 bg-black/80 backdrop-blur-sm cursor-pointer"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
     >
       <motion.div 
         initial={{ y: 100, scale: 0.95 }}
         animate={{ y: 0, scale: 1 }}
         exit={{ y: 100, scale: 0.95 }}
-        className="bg-[#1A1A1A] w-full max-w-lg rounded-t-[2rem] md:rounded-3xl border border-white/10 shadow-2xl flex flex-col h-[85vh] md:h-[650px] overflow-hidden"
+        className="bg-[#1A1A1A] w-full max-w-lg rounded-t-[2rem] md:rounded-3xl border border-white/10 shadow-2xl flex flex-col h-[85vh] md:h-[650px] overflow-hidden cursor-default"
+        onClick={(e: React.MouseEvent) => e.stopPropagation()}
       >
         {/* Header */}
         <div className="p-4 md:p-6 border-b border-white/10 flex justify-between items-center bg-[#222]">
@@ -121,7 +134,11 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, prefillMe
             >
               <MessageCircle size={14} /> WhatsApp
             </button>
-            <button onClick={onClose} className="text-gray-400 hover:text-white transition-colors p-1">
+            <button 
+              onClick={onClose} 
+              className="text-gray-400 hover:text-white transition-colors p-1"
+              aria-label="Close chat"
+            >
               <X size={24} />
             </button>
           </div>
