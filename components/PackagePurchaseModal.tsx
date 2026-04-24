@@ -58,7 +58,7 @@ export const PackagePurchaseModal: React.FC<PackagePurchaseModalProps> = ({ isOp
     const message = encodeURIComponent(
       `Hi Solar Gear! I'm interested in the ${packageName}. My name is ${formData.name}. Let's discuss installation.`
     );
-    const whatsappUrl = `https://wa.me/254722371250?text=${message}`;
+    const whatsappUrl = `https://wa.me/254141153031?text=${message}`;
 
     // 4. Redirect after a short delay to show success
     setTimeout(() => {

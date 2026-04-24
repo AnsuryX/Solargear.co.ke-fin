@@ -4,10 +4,10 @@
  * Events are pushed to the dataLayer for tag management systems (e.g., Cloudflare Zaraz).
  */
 
-type ConversionSource = 'hero' | 'header' | 'footer' | 'package_modal' | 'chat_modal' | 'lead_form' | 'faq';
+type ConversionSource = 'hero' | 'header' | 'footer' | 'package_modal' | 'chat_modal' | 'lead_form' | 'faq' | 'general_cta';
 
 // A/B Test Variants
-export type ABVariant = 'A' | 'B';
+export type ABVariant = 'A' | 'B' | 'C';
 
 /**
  * Gets or assigns a persistent A/B test variant for the user.
@@ -16,12 +16,13 @@ export const getABVariant = (): ABVariant => {
   if (typeof window === 'undefined') return 'A';
   
   const savedVariant = localStorage.getItem('sg_ab_variant') as ABVariant;
-  if (savedVariant && (savedVariant === 'A' || savedVariant === 'B')) {
+  if (savedVariant && (savedVariant === 'A' || savedVariant === 'B' || savedVariant === 'C')) {
     return savedVariant;
   }
 
-  // Randomly assign A or B
-  const newVariant: ABVariant = Math.random() > 0.5 ? 'A' : 'B';
+  // Randomly assign A, B or C
+  const rand = Math.random();
+  const newVariant: ABVariant = rand < 0.33 ? 'A' : rand < 0.66 ? 'B' : 'C';
   localStorage.setItem('sg_ab_variant', newVariant);
   return newVariant;
 };

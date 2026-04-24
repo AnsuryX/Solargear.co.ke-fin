@@ -103,7 +103,7 @@ export const LeadMagnet: React.FC = () => {
                       We've located your area. To finish the design, please WhatsApp a photo of your **KPLC Bill** and **DB Board** to our engineers now.
                     </p>
                     <a 
-                      href="https://wa.me/254722371250?text=Hi%20Solar%20Gear%2C%20I%20just%20requested%20a%20Satellite%20Audit.%20Here%20are%20the%20photos%20of%20my%20KPLC%20bill%20and%20DB%20board."
+                      href="https://wa.me/254141153031?text=Hi%20Solar%20Gear%2C%20I%20just%20requested%20a%20Satellite%20Audit.%20Here%20are%20the%20photos%20of%20my%20KPLC%20bill%20and%20DB%20board."
                       className="inline-flex items-center gap-2 bg-[#25D366] text-white px-8 py-4 rounded-xl font-bold w-full justify-center"
                     >
                       <MessageCircle size={20} /> SEND PHOTOS NOW

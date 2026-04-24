@@ -37,16 +37,24 @@ export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
   const copy = {
     headline: variant === 'A' ? (
       <>BEYOND <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-gold via-gold-light to-gold-dark">BACKUP.</span></>
-    ) : (
+    ) : variant === 'B' ? (
       <>POWER YOUR <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-gold via-gold-light to-gold-dark">FREEDOM.</span></>
+    ) : (
+      <>STOP KPLC <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-gold via-gold-light to-gold-dark">BILLS.</span></>
     ),
-    subtext: variant === 'A' ? 'Premium Solar Engineering for Kenya’s Finest Homes.' : 'Engineered for Kenya\'s Most Exclusive Residences.',
+    subtext: variant === 'A' 
+      ? 'Premium Solar Engineering for Kenya’s Finest Homes.' 
+      : variant === 'B' 
+        ? 'Engineered for Kenya\'s Most Exclusive Residences.'
+        : 'Kenya\'s #1 Choice for Zero-Maintenance Solar.',
     description: variant === 'A' 
       ? 'From the capital city to rural retreats, we design energy independence. Stop KPLC reliance today with Kenya\'s most trusted residential solar partner.'
-      : 'Experience true energy independence. Our high-performance solar systems ensure your home stays powered 24/7, no matter the grid status.',
+      : variant === 'B'
+        ? 'Experience true energy independence. Our high-performance solar systems ensure your home stays powered 24/7, no matter the grid status.'
+        : 'Stop paying for power you don\'t own. Lock in decades of free energy with Solar Gear\'s high-yield engineering. Join thousands of Kenyan families today.',
     ctaLabels: {
       primary: 'Get Quote on WhatsApp',
-      secondary: 'Order via M-Pesa'
+      secondary: 'Claim 30% Savings'
     }
   };
 

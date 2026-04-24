@@ -85,15 +85,6 @@ export const Header: React.FC<HeaderProps> = ({ onLogoClick, isDarkMode, onTheme
             {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
           </button>
 
-          <a 
-            href="tel:+254722371250" 
-            onClick={() => trackEvent('phone_click', { location: 'header' })}
-            className="hidden md:flex items-center gap-2 text-charcoal dark:text-white hover:text-gold transition-colors"
-          >
-            <Phone size={16} className="text-gold" />
-            <span className="text-xs font-bold">+254 722 371 250</span>
-          </a>
-          
           <button
             onClick={handleAssessmentClick}
             className={`px-6 py-3 rounded-full font-black text-[10px] uppercase tracking-widest transition-all flex items-center gap-2 ${

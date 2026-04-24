@@ -62,7 +62,7 @@ export const ProductSpotlight: React.FC = () => {
 
         <div className="text-center">
           <button 
-            onClick={() => window.open('https://wa.me/254722371250', '_blank')}
+            onClick={() => window.open('https://wa.me/254141153031', '_blank')}
             className="bg-gold text-charcoal font-black py-5 px-12 rounded-sm transition-all flex items-center justify-center gap-3 shadow-xl shadow-gold/10 active:scale-95 mx-auto uppercase tracking-widest text-sm"
           >
             <ShieldCheck size={20} />

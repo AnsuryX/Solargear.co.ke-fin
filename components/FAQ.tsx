@@ -98,7 +98,7 @@ export const FAQ: React.FC = () => {
         <div className="mt-20 text-center p-10 rounded-[2rem] bg-charcoal/5 dark:bg-white/5 border border-charcoal/10 dark:border-white/10 backdrop-blur-sm">
           <p className="text-gray-600 dark:text-gray-400 mb-6 font-medium italic">Still have questions about your specific site requirements?</p>
           <a 
-            href="https://wa.me/254722371250" 
+            href="https://wa.me/254141153031" 
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 bg-gold text-charcoal px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-gold-light hover:scale-105 active:scale-95 transition-all shadow-xl shadow-gold/10"

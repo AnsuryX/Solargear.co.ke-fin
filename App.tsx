@@ -2,7 +2,7 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
-import { MessageCircle, Loader2, X, Sparkles } from 'lucide-react';
+import { MessageCircle, Loader2, X, Sparkles, Bot } from 'lucide-react';
 import { trackWhatsAppClick, trackEvent } from './lib/analytics';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -20,6 +20,7 @@ const OfferSection = lazy(() => import('./components/OfferSection').then(m => ({
 const RiskReversal = lazy(() => import('./components/RiskReversal').then(m => ({ default: m.RiskReversal })));
 const LeadMagnet = lazy(() => import('./components/LeadMagnet').then(m => ({ default: m.LeadMagnet })));
 const FAQ = lazy(() => import('./components/FAQ').then(m => ({ default: m.FAQ })));
+const TechnologyBrands = lazy(() => import('./components/TechnologyBrands').then(m => ({ default: m.TechnologyBrands })));
 const Footer = lazy(() => import('./components/Footer').then(m => ({ default: m.Footer })));
 const ChatModal = lazy(() => import('./components/ChatModal').then(m => ({ default: m.ChatModal })));
 const PackagePurchaseModal = lazy(() => import('./components/PackagePurchaseModal').then(m => ({ default: m.PackagePurchaseModal })));
@@ -96,7 +97,13 @@ function App() {
   };
 
   const handleGeneralChat = () => {
-    setPrefillChatMessage(`Hi! I'd like to speak with a solar engineer about my home's energy needs in Nairobi.`);
+    // track event
+    trackWhatsAppClick('general_cta');
+    window.open("https://wa.me/254141153031?text=Hi%20Solar%20Gear!%20I'd%20like%20to%20get%20a%20solar%20quote%20for%20my%20home.", "_blank");
+  };
+
+  const handleAIChat = () => {
+    setPrefillChatMessage(`Hi! I'd like to speak with a solar engineer about my home's energy needs.`);
     setIsChatOpen(true);
     setShowGreeting(false);
   };
@@ -187,6 +194,10 @@ function App() {
         </LazySection>
         
         <LazySection threshold={0.05} rootMargin="300px">
+          <TechnologyBrands />
+        </LazySection>
+        
+        <LazySection threshold={0.05} rootMargin="300px">
           <FAQ />
         </LazySection>
         
@@ -232,30 +243,36 @@ function App() {
                 </button>
                 <div className="flex gap-2">
                   <div className="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center shrink-0">
-                     <Sparkles size={14} className="text-gold" />
+                     <Bot size={14} className="text-gold" />
                   </div>
                   <p className="text-[11px] text-charcoal font-bold leading-tight">
-                    Hi! 👋 I'm your AI Solar Engineer. Want a quick estimate for your home?
+                    Hi! 👋 I'm GearBot. Want a <span className="text-gold">Satellite Roof Audit</span> of your home? Let's start!
                   </p>
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
   
-          <button
-            onClick={handleGeneralChat}
-            className="pointer-events-auto bg-gold text-charcoal p-4 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all group flex items-center gap-3 border-4 border-charcoal relative overflow-hidden"
-            aria-label="Open AI Solar Hub"
-          >
-            <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>
-            <div className="relative">
-              <MessageCircle size={32} strokeWidth={2.5} />
-              <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-charcoal animate-pulse"></span>
-            </div>
-            <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 whitespace-nowrap font-black text-sm uppercase tracking-widest px-0 group-hover:pr-2">
-              Ask Engineer
-            </span>
-          </button>
+          <div className="flex flex-col gap-3 pointer-events-auto items-end">
+            <button
+              onClick={handleAIChat}
+              className="bg-gold text-charcoal py-3 px-6 rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-all group flex items-center gap-3 border-2 border-charcoal/10 relative overflow-hidden ring-4 ring-black/5"
+              aria-label="AI Consultation"
+            >
+              <Bot size={18} className="group-hover:rotate-12 transition-transform" />
+              <span className="font-black text-[10px] uppercase tracking-widest whitespace-nowrap">AI Engineer</span>
+              <span className="absolute top-1 right-2 w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
+            </button>
+
+            <button
+              onClick={handleGeneralChat}
+              className="bg-[#25D366] text-white py-4 px-6 rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-all group flex items-center gap-3 border-2 border-charcoal/10 relative overflow-hidden"
+              aria-label="WhatsApp"
+            >
+              <MessageCircle size={24} className="group-hover:scale-110 transition-transform" />
+              <span className="font-black text-[10px] uppercase tracking-widest text-[#1A1A1A] whitespace-nowrap">WhatsApp Chat</span>
+            </button>
+          </div>
         </div>
       </div>
     </ErrorBoundary>

@@ -11,8 +11,9 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react()],
     define: {
-      // Strictly satisfying the @google/genai requirement for process.env.API_KEY
-      'process.env.API_KEY': JSON.stringify(env.API_KEY || env.VITE_API_KEY),
+      // Strictly satisfying the @google/genai requirement for process.env.API_KEY and GEMINI_API_KEY
+      'process.env.API_KEY': JSON.stringify(env.API_KEY || env.VITE_API_KEY || env.GEMINI_API_KEY),
+      'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY || env.VITE_GEMINI_API_KEY || env.API_KEY),
       // Ensure process.env is stringified so it can be safely used in the client-side code
       'process.env': JSON.stringify(env)
     },

@@ -98,13 +98,13 @@ export const Footer: React.FC<FooterProps> = ({ onPrivacyClick }) => {
               Expert Support
             </h4>
             <div className="space-y-6">
-              <a href="tel:+254722371250" className="flex items-center gap-4 group">
+              <a href="tel:+254141153031" className="flex items-center gap-4 group">
                 <div className="p-3 bg-charcoal/5 dark:bg-white/5 rounded-xl text-gold group-hover:bg-gold group-hover:text-charcoal transition-all">
                   <Phone size={18} />
                 </div>
                 <div>
                   <p className="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Call Engineer</p>
-                  <p className="text-sm text-charcoal dark:text-white font-bold">+254 722 371 250</p>
+                  <p className="text-sm text-charcoal dark:text-white font-bold">+254 141 153 031</p>
                 </div>
               </a>
               
@@ -119,7 +119,7 @@ export const Footer: React.FC<FooterProps> = ({ onPrivacyClick }) => {
               </div>
 
               <a 
-                href="https://wa.me/254722371250" 
+                href="https://wa.me/254141153031" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-4 group bg-gold/5 p-4 rounded-2xl border border-gold/10 hover:bg-gold/10 transition-all"

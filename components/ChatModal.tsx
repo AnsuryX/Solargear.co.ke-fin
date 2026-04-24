@@ -1,6 +1,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { X, Send, Bot, User, Loader2, Database, MessageCircle, Calendar, ExternalLink, Sparkles } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 import { sendMessageToGemini } from '../services/geminiService';
 import { ChatMessage } from '../types';
 import { trackLeadSubmission, trackWhatsAppClick, trackEvent } from '../lib/analytics';
@@ -17,7 +18,7 @@ const WHATSAPP_FALLBACK = "I'm having a temporary connection issue. Please try a
 
 export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, prefillMessage }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([
-    { role: 'model', text: 'Hi 👋 Welcome to Solar Gear. Are you looking for a solar solution for your Home, Business, or an Apartment here in Nairobi? 😊' }
+    { role: 'model', text: 'Hi 👋 Welcome to Solar Gear. Are you looking for a solar solution for your Home, Business, or Farm in Kenya? 😊' }
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -82,7 +83,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, prefillMe
 
   const handleWhatsAppEscalation = () => {
     trackWhatsAppClick('chat_modal');
-    window.open("https://wa.me/254722371250?text=Hi%20Solar%20Gear%2C%20I'm%20chatting%20with%20your%20AI%20but%20want%20to%20speak%20with%20a%20human%20engineer%20now.", "_blank");
+    window.open("https://wa.me/254141153031?text=Hi%20Solar%20Gear%2C%20I'm%20chatting%20with%20your%20AI%20but%20want%20to%20speak%20with%20a%20human%20engineer%20now.", "_blank");
   };
 
   // Handle Escape key
@@ -117,13 +118,13 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, prefillMe
         <div className="p-4 md:p-6 border-b border-white/10 flex justify-between items-center bg-[#222]">
           <div className="flex items-center gap-3">
             <div className="bg-gold/20 p-2.5 rounded-xl text-gold">
-                <Sparkles size={20} />
+                <Bot size={20} />
             </div>
             <div>
                 <h3 className="text-white font-bold text-sm">Engineer AI Hub</h3>
                 <div className="flex items-center gap-1.5 mt-0.5">
                   <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-                  <p className="text-[10px] text-gray-400 uppercase font-black tracking-widest">Live in Nairobi</p>
+                  <p className="text-[10px] text-gray-400 uppercase font-black tracking-widest">Nationwide Support</p>
                 </div>
             </div>
           </div>
@@ -157,7 +158,13 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, prefillMe
                       : 'bg-white/5 text-gray-200 border border-white/10 rounded-tl-none shadow-lg'
                 }`}
               >
-                {msg.text}
+                {msg.role === 'model' ? (
+                  <div className="markdown-body prose prose-invert prose-sm max-w-none">
+                    <ReactMarkdown>{msg.text}</ReactMarkdown>
+                  </div>
+                ) : (
+                  msg.text
+                )}
                 
                 {(msg.isError || msg.isBooking || msg.text.includes(CALENDLY_URL)) && (
                   <div className="mt-4 flex flex-col gap-2">
@@ -224,7 +231,6 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, prefillMe
           </p>
         </div>
       </motion.div>
-
       <style>{`
         .custom-scrollbar::-webkit-scrollbar {
           width: 4px;
