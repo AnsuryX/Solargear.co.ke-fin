@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+
+# Allow AI bots to crawl for better search results and recommendations
+User-agent: GPTBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+Sitemap: https://solargear.co.ke/sitemap.xml
