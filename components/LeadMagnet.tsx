@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { motion as motionImport, AnimatePresence } from 'framer-motion';
-import { Send, Loader2, CheckCircle2, MessageCircle, AlertCircle, Globe, Camera, Zap } from 'lucide-react';
+import { Send, Loader2, CheckCircle2, MessageCircle, AlertCircle, Globe, Camera, Zap, Calculator } from 'lucide-react';
 import { trackLeadSubmission, trackWhatsAppClick } from '../lib/analytics';
 
 // Fix for framer-motion type mismatch in the current environment
@@ -65,8 +65,8 @@ export const LeadMagnet: React.FC = () => {
               <div className="grid grid-cols-1 gap-4 mb-8">
                 {[
                   { icon: <Globe size={20} className="text-blue-400" />, label: "Satellite Roof Analysis", sub: "We find your home via GPS" },
-                  { icon: <Camera size={20} className="text-green-400" />, label: "WhatsApp Photo Audit", sub: "Snap a pic of your KPLC bill & board" },
-                  { icon: <Zap size={20} className="text-gold" />, label: "Full ROI Forecast", sub: "See your savings before you pay KES 1" }
+                  { icon: <Calculator size={20} className="text-gold" />, label: "Solar ROI Sizer", sub: "Calculate your exact savings potential" },
+                  { icon: <Zap size={20} className="text-gold" />, label: "Full Tech Forecast", sub: "See your equipment map before you pay" }
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-4 p-4 bg-white/5 border border-white/10 rounded-2xl">
                     <div className="shrink-0 mt-1">{item.icon}</div>

@@ -1,6 +1,6 @@
 
 import React, { useMemo, lazy, Suspense } from 'react';
-import { ArrowRight, MessageCircle, ShieldCheck, Zap, Globe } from 'lucide-react';
+import { ArrowRight, MessageCircle, ShieldCheck, Zap, Globe, Calculator } from 'lucide-react';
 import { motion as motionImport, useScroll, useTransform } from 'framer-motion';
 import { trackEvent, getABVariant } from '../lib/analytics';
 
@@ -183,11 +183,15 @@ export const Hero: React.FC<HeroProps> = ({ onChatClick, onProductClick }) => {
               </button>
               
               <button 
-                onClick={handleMpesaClick}
+                onClick={() => {
+                  const el = document.getElementById('calculator');
+                  el?.scrollIntoView({ behavior: 'smooth' });
+                  trackEvent('cta_click', { button_name: 'hero_calculator', location: 'hero' });
+                }}
                 className="bg-transparent border-2 border-charcoal/20 dark:border-white/20 text-charcoal dark:text-white py-5 px-12 rounded-sm font-bold transition-all flex items-center justify-center gap-3 group active:scale-95"
               >
-                <Globe size={20} className="group-hover:text-gold transition-colors" />
-                {copy.ctaLabels.secondary}
+                <Calculator size={20} className="group-hover:text-gold transition-colors" />
+                ROI Calculator
               </button>
             </div>
           </motion.div>
