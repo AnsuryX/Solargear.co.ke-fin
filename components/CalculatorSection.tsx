@@ -33,7 +33,7 @@ export const CalculatorSection: React.FC = () => {
   };
 
   return (
-    <section id="calculator" className="py-24 bg-gray-50 dark:bg-[#111] relative overflow-hidden transition-colors duration-300">
+    <section id="calculator" className="py-24 bg-gray-100 dark:bg-[#0A0A0A] relative overflow-hidden transition-colors duration-300">
       {/* Background Decor */}
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent"></div>
       
@@ -131,37 +131,37 @@ export const CalculatorSection: React.FC = () => {
             >
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Result Card 1 */}
-                <div className="bg-white dark:bg-gradient-to-br dark:from-white/10 dark:to-transparent p-6 rounded-2xl border border-black/5 dark:border-white/10 shadow-lg dark:shadow-none">
+                <div className="bg-charcoal dark:bg-gradient-to-br dark:from-white/5 dark:to-transparent p-6 rounded-2xl border border-white/10 shadow-2xl">
                   <Sun className="text-gold mb-4" size={24} />
-                  <p className="text-gray-500 dark:text-gray-400 text-xs uppercase font-bold tracking-widest mb-1">System Size</p>
-                  <h4 className="text-3xl font-black text-charcoal dark:text-white">{systemSize} <span className="text-lg font-normal text-gray-400 dark:text-gray-500">kWp</span></h4>
-                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">Optimal for your roof</p>
+                  <p className="text-gray-400 dark:text-gray-400 text-xs uppercase font-bold tracking-widest mb-1">System Size</p>
+                  <h4 className="text-3xl font-black text-white">{systemSize} <span className="text-lg font-normal text-gray-500">kWp</span></h4>
+                  <p className="text-xs text-gray-400 mt-2">Optimal for your roof</p>
                 </div>
 
                 {/* Result Card 2 */}
-                <div className="bg-white dark:bg-gradient-to-br dark:from-white/10 dark:to-transparent p-6 rounded-2xl border border-black/5 dark:border-white/10 shadow-lg dark:shadow-none">
-                  <Zap className="text-blue-500 dark:text-blue-400 mb-4" size={24} />
-                  <p className="text-gray-500 dark:text-gray-400 text-xs uppercase font-bold tracking-widest mb-1">Panels Required</p>
-                  <h4 className="text-3xl font-black text-charcoal dark:text-white">{panelsCount} <span className="text-lg font-normal text-gray-400 dark:text-gray-500">Units</span></h4>
-                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">550W Tier-1 Mono-PERC</p>
+                <div className="bg-charcoal dark:bg-gradient-to-br dark:from-white/5 dark:to-transparent p-6 rounded-2xl border border-white/10 shadow-2xl">
+                  <Zap className="text-blue-400 mb-4" size={24} />
+                  <p className="text-gray-400 text-xs uppercase font-bold tracking-widest mb-1">Panels Required</p>
+                  <h4 className="text-3xl font-black text-white">{panelsCount} <span className="text-lg font-normal text-gray-500">Units</span></h4>
+                  <p className="text-xs text-gray-400 mt-2">550W Tier-1 Mono-PERC</p>
                 </div>
 
                 {/* Result Card 3 */}
-                <div className="bg-white dark:bg-gradient-to-br dark:from-white/10 dark:to-transparent p-6 rounded-2xl border border-black/5 dark:border-white/10 shadow-lg dark:shadow-none">
-                  <Battery className="text-green-500 dark:text-green-400 mb-4" size={24} />
-                  <p className="text-gray-500 dark:text-gray-400 text-xs uppercase font-bold tracking-widest mb-1">Storage Needed</p>
-                  <h4 className="text-3xl font-black text-charcoal dark:text-white">{batterySize} <span className="text-lg font-normal text-gray-400 dark:text-gray-500">kWh</span></h4>
-                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">LiFePO4 Safe Battery Tech</p>
+                <div className="bg-charcoal dark:bg-gradient-to-br dark:from-white/5 dark:to-transparent p-6 rounded-2xl border border-white/10 shadow-2xl">
+                  <Battery className="text-green-400 mb-4" size={24} />
+                  <p className="text-gray-400 text-xs uppercase font-bold tracking-widest mb-1">Storage Needed</p>
+                  <h4 className="text-3xl font-black text-white">{batterySize} <span className="text-lg font-normal text-gray-500">kWh</span></h4>
+                  <p className="text-xs text-gray-400 mt-2">LiFePO4 Safe Battery Tech</p>
                 </div>
 
                 {/* Result Card 4 */}
-                <div className="bg-gold p-6 rounded-2xl flex flex-col justify-center items-center text-center cursor-pointer hover:bg-gold-light transition-colors group shadow-lg" onClick={scrollToReserve}>
+                <div className="bg-gold p-6 rounded-2xl flex flex-col justify-center items-center text-center cursor-pointer hover:bg-gold-light transition-colors group shadow-xl active:scale-95" onClick={scrollToReserve}>
                   <p className="text-charcoal text-xs uppercase font-black tracking-widest mb-2">Get Exact Quote</p>
                   <ArrowRight className="text-charcoal group-hover:translate-x-2 transition-transform" size={28} />
                 </div>
               </div>
 
-              <div className="glass-panel p-6 rounded-2xl border-gold/30 bg-gold/5">
+              <div className="bg-white/5 border border-gold/30 dark:bg-gold/5 p-6 rounded-2xl">
                 <h4 className="text-charcoal dark:text-white font-bold mb-2 flex items-center gap-2">
                   <span className="w-2 h-2 bg-gold rounded-full"></span>
                   The "Solar Gear" Advantage
